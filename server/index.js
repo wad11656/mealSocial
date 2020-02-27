@@ -33,7 +33,7 @@
  	})
  })
 
- app.get('/update', (req, res) => {
+ app.put('/update', (req, res) => {
  	connection.query('UPDATE Users SET name = ? WHERE id = ?', [req.query.name, parseInt(req.query.id)], function (err, rows, fields) {
  		if (err) {
  			res.send(err)
@@ -44,7 +44,7 @@
  	})
  })
 
- app.get('/create', (req, res) => {
+ app.post('/create', (req, res) => {
  	connection.query('INSERT INTO Users (name) VALUES (?)', req.query.name, function (err, rows, fields) {
  		 if (err) {
  			res.send(err)
@@ -55,7 +55,7 @@
  	})
  })
 
- app.get('/delete', (req, res) => {
+ app.delete('/delete', (req, res) => {
  	connection.query('DELETE FROM Users WHERE id = ?', req.query.id, function (err, rows, fields) {
  		if (err) {
  			res.send(err)
