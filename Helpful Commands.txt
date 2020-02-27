@@ -1,1 +1,5 @@
+List Docker ID's
+docker ps
+
+Run bash environment for given ID's
 docker exec -it “container-id” /bin/bash
