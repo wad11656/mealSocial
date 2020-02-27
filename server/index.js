@@ -27,7 +27,7 @@
  			res.send(string_return)
  			}
  			else{
- 				res.send('Empty table!')
+ 				res.send('Empty table!\n')
  			}
  		}
  	})
@@ -39,7 +39,7 @@
  			res.send(err)
  		}
  		else{
- 			res.send('Update Successful')
+ 			res.send('Update Successful\n')
  		}
  	})
  })
@@ -50,7 +50,7 @@
  			res.send(err)
  		}
  		else{
- 			res.send('Create Successful')
+ 			res.send('Create Successful\n')
  		}
  	})
  })
@@ -61,7 +61,7 @@
  			res.send(err)
  		}
  		else{
- 			res.send('Delete Successful')
+ 			res.send('Delete Successful\n')
  		}
  	})
  })
