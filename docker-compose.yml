@@ -1,0 +1,30 @@
+version: '2.1'
+
+services:
+    db:
+        build: ./mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=410mealRockWad
+        networks:
+            - it410net
+        ports:
+            - "3307:3306"
+        healthcheck:
+            test: "exit 0"
+            interval: "30s"
+            timeout: "3s"
+            retries: 3
+    
+    app:
+        build: .
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - it410net
+        ports:
+            - "3000:3000"
+            
+networks:
+    it410net:
+        driver: bridge
