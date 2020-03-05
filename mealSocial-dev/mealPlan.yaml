@@ -48,6 +48,8 @@ paths:
   
     # ================= POST NEW RECIPE =================  
     post:
+      x-controller: recipe-controller
+      x-operation: createRecipe
       tags:
       - Recipes
       description: 'Creates a new recipe'
@@ -69,6 +71,8 @@ paths:
   # ================= GET RECIPE BY ID =================                    
   /recipes/{id}:
     get:
+      x-controller: recipe-controller
+      x-operation: getRecipeById
       tags:
       - Recipes
       description: 'Obtain recipe data by id'
@@ -90,6 +94,8 @@ paths:
   
   # ================= PUT RECIPE BY ID =================
     put:
+      x-controller: recipe-controller
+      x-operation: editRecipe
       tags:
       - Recipes
       description: 'Change recipe'
@@ -113,6 +119,8 @@ paths:
           
   # ================= DELETE RECIPE BY ID =================
     delete:
+      x-controller: recipe-controller
+      x-operation: deleteRecipe
       tags:
       - Recipes
       description: 'Delete recipe'
@@ -697,7 +705,7 @@ components:
           example: 4
           readOnly: true
           
-        recipe name:
+        recipeName:
           type: string
           example: 'Mama''s Meatloaf'
           
@@ -709,8 +717,9 @@ components:
           type: string
           example: 'My favorite meatloaf!'
           
-        ingredients:
-          $ref: '#/components/schemas/Ingredients'
+        ingredientId:
+          type: integer
+          example: 1
       
     # -------- RECIPES (Array of RECIPE Objects) --------
     Recipes:

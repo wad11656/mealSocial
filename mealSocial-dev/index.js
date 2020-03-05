@@ -9,7 +9,7 @@ app.use(express.json())
 
 const enforcer = Enforcer(path.resolve(__dirname, "mealPlan.yaml"))
 
-enforcer.controllers(path.resolve(__dirname, "/controllers"))
+enforcer.controllers(path.resolve(__dirname, "controllers"))
 
 app.use(enforcer.middleware())
 
