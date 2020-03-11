@@ -6,7 +6,6 @@ exports.openDataConnection = function() {
         if (err) {
           console.error(err.message);
         }
-        console.log('Connected to the database.');
       });
 
       return db;
@@ -14,5 +13,4 @@ exports.openDataConnection = function() {
 
 exports.closeDataConnection = function(db) {
     db.close();
-    console.log("Closed Database")
 }
