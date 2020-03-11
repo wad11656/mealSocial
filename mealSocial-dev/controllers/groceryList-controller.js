@@ -2,12 +2,12 @@ exports.getGroceryLists = function(req, res, next) {
     res.send("Get GroceryLists!")
 }
 
-exports.getGroceryListById = function(req, res, next) {
-    res.send("Get GroceryList by Id!")
-}
-
 exports.createGroceryList = function(req, res, next) {
     res.send("Create new GroceryList!")
+}
+
+exports.getGroceryListById = function(req, res, next) {
+    res.send("Get GroceryList by Id!")
 }
 
 exports.editGroceryList = function(req, res, next) {

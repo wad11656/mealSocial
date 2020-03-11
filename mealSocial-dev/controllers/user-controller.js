@@ -2,12 +2,12 @@ exports.getUsers = function(req, res, next) {
     res.send("Get Users!")
 }
 
-exports.getUserById = function(req, res, next) {
-    res.send("Get User by Id!")
-}
-
 exports.createUser = function(req, res, next) {
     res.send("Create new User!")
+}
+
+exports.getUserById = function(req, res, next) {
+    res.send("Get User by Id!")
 }
 
 exports.editUser = function(req, res, next) {

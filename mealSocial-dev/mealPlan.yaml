@@ -141,6 +141,8 @@ paths:
   # ================= GET ALL INGREDIENTS =================
   /ingredients:
     get:
+      x-controller: ingredients-controller
+      x-operation: getIngredients  
       tags:
       - Ingredients
       description: 'Obtain all ingredients'' data'
@@ -172,6 +174,8 @@ paths:
                 
     # ================= POST NEW INGREDIENT =================  
     post:
+      x-controller: ingredients-controller
+      x-operation: createIngredient
       tags:
       - Ingredients
       description: 'Creates a new recipe'
@@ -193,6 +197,8 @@ paths:
   # ================= GET RECIPE INGREDIENTS BY RECIPE ID =================
   /ingredients/{recipe_id}:
     get:
+      x-controller: ingredients-controller
+      x-operation: getIngredientList
       tags:
       - Ingredients
       description: 'Obtain ingredients by recipe ID'
@@ -215,6 +221,8 @@ paths:
   # ================= GET INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
   /ingredients/{recipe_id}/{ingredient_id}:
     get:
+      x-controller: ingredients-controller
+      x-operation: getIngredientById
       tags:
       - Ingredients
       description: 'Obtain ingredient by [recipe_id + ingredient_id]'
@@ -243,6 +251,8 @@ paths:
                 
   # ================= PUT INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
     put:
+      x-controller: ingredients-controller
+      x-operation: editIngredient
       tags:
       - Ingredients
       description: 'Edit ingredient by [recipe_id + ingredient_id]'
@@ -273,6 +283,8 @@ paths:
           
   # ================= DELETE INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
     delete:
+      x-controller: ingredients-controller
+      x-operation: deleteIngredient
       tags:
       - Ingredients
       description: 'Delete ingredient with [recipe_id + ingredient_id]'
@@ -300,6 +312,8 @@ paths:
   # ================= GET ALL MEAL PLANS =================
   /mealplans:
     get:
+      x-controller: mealPlans-controller
+      x-operation: getMealPlans
       tags:
       - Meal Plans
       description: 'Obtain all meal plans'' data'
@@ -331,6 +345,8 @@ paths:
                 
     # ================= POST NEW MEAL PLAN =================  
     post:
+      x-controller: mealPlans-controller
+      x-operation: createMealPlan
       tags:
       - Meal Plans
       description: 'Creates a new meal plan'
@@ -352,6 +368,8 @@ paths:
   # ================= GET MEAL PLAN BY ID =================
   /mealplans/{id}:
     get:
+      x-controller: mealPlans-controller
+      x-operation: getMealPlanById
       tags:
       - Meal Plans
       description: 'Obtain ingredients by meal plan ID'
@@ -373,6 +391,8 @@ paths:
                 
   # ================= PUT MEAL PLAN BY ID =================
     put:
+      x-controller: mealPlans-controller
+      x-operation: editMealPlan
       tags:
       - Meal Plans
       description: 'Edit ingredients with meal plan with ID'
@@ -396,6 +416,8 @@ paths:
           
   # ================= DELETE MEAL PLAN BY ID =================
     delete:
+      x-controller: mealPlans-controller
+      x-operation: deleteMealPlan
       tags:
       - Meal Plans
       description: 'Delete ingredients with ID'
@@ -417,6 +439,8 @@ paths:
   # ================= GET ALL USERS =================
   /users:
     get:
+      x-controller: user-controller
+      x-operation: getUsers
       tags:
       - Users
       description: 'Obtain all users'' data'
@@ -448,6 +472,8 @@ paths:
                 
     # ================= POST NEW USER =================  
     post:
+      x-controller: user-controller
+      x-operation: createUser
       tags:
       - Users
       description: 'Creates a new user'
@@ -469,6 +495,8 @@ paths:
   # ================= GET USER BY ID =================
   /users/{id}:
     get:
+      x-controller: user-controller
+      x-operation: getUserById
       tags:
       - Users
       description: 'Obtain ingredients by user ID'
@@ -490,10 +518,12 @@ paths:
                 
   # ================= PUT USER BY ID =================
     put:
+      x-controller: user-controller
+      x-operation: editUser
       tags:
       - Users
       description: 'Edit ingredients of user with ID'
-      parameters:
+      parameters: editUser
         - in: path
           name: id
           required: true
@@ -513,6 +543,8 @@ paths:
           
    # ================= DELETE USER BY ID =================
     delete:
+      x-controller: user-controller
+      x-operation: deleteUser
       tags:
         - Users
       description: 'Delete ingredients of user with ID'
@@ -533,6 +565,8 @@ paths:
   # ================= GET ALL GROCERY LISTS =================
   /grocerylists:
     get:
+      x-controller: groceryList-controller
+      x-operation: getGroceryLists
       tags:
       - Grocery Lists
       description: 'Obtain all grocery lists'' data'
@@ -564,6 +598,8 @@ paths:
                 
     # ================= POST NEW GROCERY LIST =================  
     post:
+      x-controller: groceryList-controller
+      x-operation: createGroceryList
       tags:
       - Grocery Lists
       description: 'Creates a new grocery list'
@@ -585,6 +621,8 @@ paths:
   # ================= GET GROCERY LIST BY ID =================
   /grocerylists/{id}:
     get:
+      x-controller: groceryList-controller
+      x-operation: getGroceryListById
       tags:
       - Grocery Lists
       description: 'Obtain grocery list by ID'
@@ -606,6 +644,8 @@ paths:
                 
   # ================= PUT GROCERY LIST BY ID =================
     put:
+      x-controller: groceryList-controller
+      x-operation: editGroceryList
       tags:
       - Grocery Lists
       description: 'Edit grocery list by ID'
@@ -629,6 +669,8 @@ paths:
           
   # ================= DELETE GROCERY LIST BY ID =================
     delete:
+      x-controller: groceryList-controller
+      x-operation: deleteGroceryList
       tags:
       - Grocery Lists
       description: 'Delete grocery list by ID'
@@ -652,6 +694,8 @@ paths:
   
   /login:
     post:
+      x-controller: user-controller
+      x-operation: login
       tags:
       - Session Management
       description: 'Login User'
@@ -674,6 +718,8 @@ paths:
   
   /logout/{id}:
     delete:
+      x-controller: session-controller
+      x-operation: logout
       tags:
       - Session Management
       description: 'Logout User with ID'

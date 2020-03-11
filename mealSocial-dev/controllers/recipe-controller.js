@@ -50,8 +50,8 @@ exports.getRecipeById = function(req, res, next) {
 
 exports.editRecipe = function(req, res, next) {
     let db = data.openDataConnection();
-    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId];
-    let sql = 'UPDATE Recipe SET recipeName=?, imageUrl=?, notes=?, ingredientId=?  WHERE id=' + req.params.id;
+    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId, req.params.id];
+    let sql = 'UPDATE Recipe SET recipeName=?, imageUrl=?, notes=?, ingredientId=?  WHERE id=?';
     
     console.log(sql);
 
