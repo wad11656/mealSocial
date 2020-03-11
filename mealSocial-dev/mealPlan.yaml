@@ -523,7 +523,7 @@ paths:
       tags:
       - Users
       description: 'Edit ingredients of user with ID'
-      parameters: editUser
+      parameters: 
         - in: path
           name: id
           required: true
@@ -546,7 +546,7 @@ paths:
       x-controller: user-controller
       x-operation: deleteUser
       tags:
-        - Users
+      - Users
       description: 'Delete ingredients of user with ID'
       parameters:
         - in: path
@@ -694,7 +694,7 @@ paths:
   
   /login:
     post:
-      x-controller: user-controller
+      x-controller: session-controller
       x-operation: login
       tags:
       - Session Management
@@ -819,8 +819,9 @@ components:
           type: string
           example: 'M/W/F Main Courses'
           
-        recipes:
-          $ref: '#/components/schemas/Recipes'
+        recipeIdList:
+          type: string
+          example: '1,2,3,4,5'
           
         date:
           type: string
