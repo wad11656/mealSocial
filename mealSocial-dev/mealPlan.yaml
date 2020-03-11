@@ -805,10 +805,9 @@ components:
           
     # -------- INGREDIENTS (Array of INGREDIENT Objects) --------
     Ingredients:
-      description: 'Array of Ingredient data'
-      type: array
-      items:
-        $ref: '#/components/schemas/Ingredient' 
+      description: 'List of Ingredient data'
+      type: string
+      example: '1,2,3,4,5'
         
         
     # -------- MEALPLAN (Object) --------
