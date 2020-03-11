@@ -44,7 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Recipes'
+                $ref: '#/components/schemas/RecipeArray'
   
     # ================= POST NEW RECIPE =================  
     post:
@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ingredients'
+                $ref: '#/components/schemas/IngredientArray'
                 
     # ================= POST NEW INGREDIENT =================  
     post:
@@ -194,53 +194,23 @@ paths:
               schema:
                 type: string
 
-  # ================= GET RECIPE INGREDIENTS BY RECIPE ID =================
-  /ingredients/{recipe_id}:
-    get:
-      x-controller: ingredients-controller
-      x-operation: getIngredientList
-      tags:
-      - Ingredients
-      description: 'Obtain ingredients by recipe ID'
-      parameters:
-        - in: path
-          name: recipe_id
-          required: true
-          description: 'The ID of the recipe'
-          schema:
-            type: integer
-            example: 37
-      responses:
-        200:
-          description: 'Successful pull of ingredients by recipe ID'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ingredients'
                 
   # ================= GET INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
-  /ingredients/{recipe_id}/{ingredient_id}:
+  /ingredients/{id}:
     get:
       x-controller: ingredients-controller
       x-operation: getIngredientById
       tags:
       - Ingredients
-      description: 'Obtain ingredient by [recipe_id + ingredient_id]'
+      description: 'Obtain ingredient by [id]'
       parameters:
         - in: path
-          name: recipe_id
+          name: id
           required: true
           description: 'The ID of the recipe'
           schema:
             type: integer
             example: 37
-        - in: path
-          name: ingredient_id
-          required: true
-          description: 'The ID of the recipe''s ingredient'
-          schema:
-            type: integer
-            example: 2
       responses:
         200:
           description: 'Successful pull of ingredient by [recipe id + ingredient id]'
@@ -255,22 +225,15 @@ paths:
       x-operation: editIngredient
       tags:
       - Ingredients
-      description: 'Edit ingredient by [recipe_id + ingredient_id]'
+      description: 'Edit ingredient by [id]'
       parameters:
         - in: path
-          name: recipe_id
+          name: id
           required: true
           description: 'The ID of the recipe'
           schema:
             type: integer
             example: 37
-        - in: path
-          name: ingredient_id
-          required: true
-          description: 'The ID of the recipe''s ingredient'
-          schema:
-            type: integer
-            example: 2
       requestBody:
         required: true
         content:
@@ -287,22 +250,15 @@ paths:
       x-operation: deleteIngredient
       tags:
       - Ingredients
-      description: 'Delete ingredient with [recipe_id + ingredient_id]'
+      description: 'Delete ingredient with [id]'
       parameters:
         - in: path
-          name: recipe_id
+          name: id
           required: true
           description: 'The ID of the recipe'
           schema:
             type: integer
             example: 37
-        - in: path
-          name: ingredient_id
-          required: true
-          description: 'The ID of the recipe''s ingredient'
-          schema:
-            type: integer
-            example: 2
       responses:
         200:
           description: 'Successful deleted the ingredient with [recipe id + ingredient id]'
@@ -341,7 +297,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MealPlans'
+                $ref: '#/components/schemas/MealPlanArray'
                 
     # ================= POST NEW MEAL PLAN =================  
     post:
@@ -774,11 +730,18 @@ components:
           type: integer
           example: 1
       
-    # -------- RECIPES (Array of RECIPE Objects) --------
+    # -------- RECIPES (List of Recipe IDs) --------
     Recipes:
-      description: 'Array of Recipe data'
+      description: 'List of Recipe ID'
       type: string
       example: '1,2,3,4,5'
+    
+     # -------- RECIPESARRAY (List of Recipe IDs) --------
+    RecipeArray:
+      description: 'Array of Recipe data'
+      type: array
+      items:
+        $ref: '#/components/schemas/Recipe' 
         
     # -------- INGREDIENT (Object) --------
     Ingredient:
@@ -790,25 +753,23 @@ components:
           example: 37
           readOnly: true
           
-        recipe_id:
-          type: integer
-          example: 2
-          readOnly: true
-          
-        ingredient name:
+        ingredientList:
           type: string
-          example: 'Diced Onions'
-          
-        measurement:
-          type: string
-          example: '1.5 cups'
+          example: '[{"name":"Diced Onions","measurement":"1 Cup"},{"name":"Garlic","measurement":"1 Teaspoon"}]'
+
           
     # -------- INGREDIENTS (Array of INGREDIENT Objects) --------
     Ingredients:
       description: 'List of Ingredient data'
       type: string
       example: '1,2,3,4,5'
-        
+      
+    # -------- INGREDIENTSSARRAY (List of Recipe IDs) --------
+    IngredientArray:
+      description: 'Array of Ingredient data'
+      type: array
+      items:
+        $ref: '#/components/schemas/Ingredient'
         
     # -------- MEALPLAN (Object) --------
     MealPlan:
@@ -837,6 +798,13 @@ components:
       description: 'Array of MealPlan data'
       type: string
       example: '1,2,3,4,5'
+      
+    # -------- MealPlanSARRAY (List of Recipe IDs) --------
+    MealPlanArray:
+      description: 'Array of MealPlan data'
+      type: array
+      items:
+        $ref: '#/components/schemas/MealPlan'
         
     # -------- USER (Object) --------
     User:
