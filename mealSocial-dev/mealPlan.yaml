@@ -488,7 +488,14 @@ paths:
           description: 'Successfully added a new user'
           headers:
             location:
-              description: 'resultant URI of POST new recipe'
+              description: 'resultant URI of POST new User'
+              schema:
+                type: string
+        400:
+          description: 'Failed to add a new user, Username must be unique.'
+          headers:
+            location:
+              description: 'resultant URI of a failed POST new User'
               schema:
                 type: string
 
@@ -770,9 +777,8 @@ components:
     # -------- RECIPES (Array of RECIPE Objects) --------
     Recipes:
       description: 'Array of Recipe data'
-      type: array
-      items:
-        $ref: '#/components/schemas/Recipe'
+      type: string
+      example: '1,2,3,4,5'
         
     # -------- INGREDIENT (Object) --------
     Ingredient:
@@ -830,9 +836,8 @@ components:
     # -------- MEALPLANS (Array of MEALPLAN Objects) --------
     MealPlans:
       description: 'Array of MealPlan data'
-      type: array
-      items:
-        $ref: '#/components/schemas/MealPlan' 
+      type: string
+      example: '1,2,3,4,5'
         
     # -------- USER (Object) --------
     User:
