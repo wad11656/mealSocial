@@ -26,7 +26,13 @@ exports.createRecipe = function(req, res, next) {
             res.sendStatus(400);
         }
         else {
-            res.sendStatus(201);
+            db.get('SELECT * FROM Recipe ORDER BY id DESC LIMIT 1;', [], (err, rows) => {
+                if(err) {
+                    console.log(err);
+                    throw err;
+                }
+                res.send(rows);
+            });
         }
       });
 
@@ -52,8 +58,6 @@ exports.editRecipe = function(req, res, next) {
     let db = data.openDataConnection();
     let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId, req.params.id];
     let sql = 'UPDATE Recipe SET recipeName=?, imageUrl=?, notes=?, ingredientId=?  WHERE id=?';
-    
-    console.log(sql);
 
     db.run(sql, params, (err) => {
         if (err) {

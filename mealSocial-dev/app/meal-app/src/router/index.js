@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Recipe from '../views/Recipe.vue'
+import MealPlans from '../views/MealPlan.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
     path: '/recipes',
     name: 'Recipes',
     component: Recipe
+  }, 
+  {
+    path: '/mealplans',
+    name: 'mealplans',
+    component: MealPlans
   }
 ]
 

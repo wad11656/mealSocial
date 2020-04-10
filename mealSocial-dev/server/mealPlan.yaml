@@ -60,7 +60,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Recipe'
       responses:
-        201:
+        200:
           description: 'Successfully created a new recipe'
           headers:
             location:
@@ -186,7 +186,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Ingredient'
       responses:
-        201:
+        200:
           description: 'Successfully added a new ingredient'
           headers:
             location:

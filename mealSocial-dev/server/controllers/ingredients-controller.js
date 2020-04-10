@@ -26,10 +26,15 @@ exports.createIngredient = function(req, res, next) {
             res.sendStatus(400);
         }
         else {
-            res.sendStatus(201);
+            db.get('SELECT * FROM Ingredient ORDER BY id DESC LIMIT 1;', [], (err, rows) => {
+                if(err) {
+                    console.log(err);
+                    throw err;
+                }
+                res.send(rows);
+            });
         }
       });
-
     data.closeDataConnection(db);
 }
 
@@ -52,8 +57,6 @@ exports.editIngredient = function(req, res, next) {
     let db = data.openDataConnection();
     let params = [req.body.ingredientList, req.params.id];
     let sql = 'UPDATE Ingredient SET ingredientList=?  WHERE id=?';
-    
-    console.log(sql);
 
     db.run(sql, params, (err) => {
         if (err) {
