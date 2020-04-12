@@ -1,20 +1,7 @@
 const data = require('../data/databaseConnection');
 
-exports.getUsers = function(req, res, next) {
-    let db = data.openDataConnection();
-    let sql = 'SELECT * FROM User';
 
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
-        res.send(rows);
-    });
-
-    data.closeDataConnection(db);
-}
-
+/* /register */
 exports.createUser = function(req, res, next) {
     let db = data.openDataConnection();
     let params = [req.body.email, req.body.username, req.body.avatarURL, req.body.mealplans, req.body.recipes];
@@ -32,6 +19,11 @@ exports.createUser = function(req, res, next) {
 
     data.closeDataConnection(db);
 }
+
+/* /register-admin*/
+
+
+/* login */
 
 exports.getUserById = function(req, res, next) {
     let db = data.openDataConnection();
@@ -80,6 +72,21 @@ exports.deleteUser = function(req, res, next) {
         else {
             res.sendStatus(200);
         }
+    });
+
+    data.closeDataConnection(db);
+}
+
+exports.getUsers = function(req, res, next) {
+    let db = data.openDataConnection();
+    let sql = 'SELECT * FROM User';
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+        res.send(rows);
     });
 
     data.closeDataConnection(db);

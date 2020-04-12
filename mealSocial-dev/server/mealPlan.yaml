@@ -655,27 +655,27 @@ paths:
   
   # ================= POST NEW USER SESSION =================
   
-  /login:
-    post:
-      x-controller: session-controller
-      x-operation: login
-      tags:
-      - Session Management
-      description: 'Login User'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserLogin'
-      responses:
-        201:
-          description: 'Successfully added a new grocery list'
-          headers:
-            location:
-              description: 'resultant URI of POST new recipe'
-              schema:
-                type: string
+  # /login:
+  #   post:
+  #     x-controller: session-controller
+  #     x-operation: login
+  #     tags:
+  #     - Session Management
+  #     description: 'Login User'
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/UserLogin'
+  #     responses:
+  #       201:
+  #         description: 'Successfully added a new grocery list'
+  #         headers:
+  #           location:
+  #             description: 'resultant URI of POST new recipe'
+  #             schema:
+  #               type: string
           
   # ================= DELETE EXISTING USER SESSION =================
   
