@@ -49,7 +49,7 @@
 
         <ol>
           <li v-for="(ingredient, index) in ingredientList" :key="ingredient.name">
-          {{ingredient.measurement}} of {{ingredient.name}}
+          {{ingredient.measurement}} {{ingredient.name}}
           <button v-on:click="removeIngredient(index)">&times;</button>
           </li>
         </ol>
@@ -210,7 +210,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped >
 .addButton {
     float: right;
 }
