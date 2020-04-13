@@ -1,34 +1,44 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/recipes">Recipes</router-link> |
-      <router-link to="/mealplans">MealPlans</router-link> |
-      <router-link to="/grocerylist">GroceryList</router-link>
-    </div>
-    <router-view/>
+    <Navigation :loggedIn="loggedIn" @loggedout="setLoggedOut"></Navigation>
+    <router-view @loggedIn="setLoggedIn" />
   </div>
 </template>
 
+<script>
+import Navigation from "./components/Navigation";
+export default {
+  name: "App",
+  components: {
+    Navigation: Navigation
+  },
+  data() {
+    return {
+      loggedIn: false
+    };
+  },
+  mounted() {
+    if (localStorage.getItem("jwt")) {
+      this.loggedIn = true;
+    }
+  },
+  methods: {
+    setLoggedIn() {
+      this.loggedIn = true;
+    },
+    setLoggedOut() {
+      this.loggedIn = false;
+    }
+  }
+};
+</script>
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>

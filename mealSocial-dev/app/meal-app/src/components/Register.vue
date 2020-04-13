@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img src="../assets/logo.png" width="500px" />
     <h4>Register</h4>
     <form>
       <label for="name">Name</label>
@@ -19,12 +20,7 @@
 
       <label for="password-confirm">Confirm Password</label>
       <div>
-        <input
-          id="password-confirm"
-          type="password"
-          v-model="password_confirmation"
-          required
-        />
+        <input id="password-confirm" type="password" v-model="password_confirmation" required />
       </div>
 
       <label for="password-confirm">Is this an administrator account?</label>
@@ -43,6 +39,8 @@
 </template>
 
 <script>
+// Here is the regex to test if an email is valid
+const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export default {
   props: ["nextUrl"],
   data() {
@@ -57,6 +55,8 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
+
+      if (!mailRegex.test(this.email)) return alert("Invalid email format!");
 
       if (
         this.password === this.password_confirmation &&
@@ -85,7 +85,8 @@ export default {
             }
           })
           .catch(error => {
-            console.error(error);
+            console.error(error.response);
+            alert(JSON.stringify(error.response.data));
           });
       } else {
         this.password = "";

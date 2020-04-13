@@ -1,7 +1,7 @@
-const express = require('express')
-const path = require('path')
-const Enforcer = require('openapi-enforcer-middleware')
-var cors = require('cors')
+const express = require("express");
+const path = require("path");
+const Enforcer = require("openapi-enforcer-middleware");
+var cors = require("cors");
 
 /* User Constants*/
 const DB = require("./data/userData.js");
@@ -16,33 +16,35 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 /* End of USER Constants*/
 
-const app = express()
-app.use(express.json())
-app.use(cors())
+const app = express();
+app.use(express.json());
+app.use(cors());
 // Create an enforcermiddleware instance
 
-const enforcer = Enforcer(path.resolve(__dirname, "mealPlan.yaml"))
+const enforcer = Enforcer(path.resolve(__dirname, "mealPlan.yaml"));
 
-enforcer.controllers(path.resolve(__dirname, "controllers"))
+enforcer.controllers(path.resolve(__dirname, "controllers"));
 
-app.use(enforcer.middleware())
-
+app.use(enforcer.middleware());
 
 /* USER Endpoints */
 
-router.post("/register", function(req, res) {
+router.post("/register", function (req, res) {
   db.insert(
     [req.body.name, req.body.email, bcrypt.hashSync(req.body.password, 8)],
-    function(err) {
+    function (err) {
       if (err)
-        return res
-          .status(500)
-          .send("There was a problem registering the user.");
+        return (
+          res
+            .status(500)
+            //.send("There was a problem registering the user.");
+            .send("A user with that email already exists.")
+        );
       db.selectByEmail(req.body.email, (err, user) => {
         if (err)
           return res.status(500).send("There was a problem getting user");
         let token = jwt.sign({ id: user.id }, config.secret, {
-          expiresIn: 86400 // expires in 24 hours
+          expiresIn: 86400, // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token, user: user });
       });
@@ -50,19 +52,22 @@ router.post("/register", function(req, res) {
   );
 });
 
-router.post("/register-admin", function(req, res) {
+router.post("/register-admin", function (req, res) {
   db.insertAdmin(
     [req.body.name, req.body.email, bcrypt.hashSync(req.body.password, 8), 1],
-    function(err) {
+    function (err) {
       if (err)
-        return res
-          .status(500)
-          .send("There was a problem registering the user.");
+        return (
+          res
+            .status(500)
+            //.send("There was a problem registering the user.");
+            .send("A user with that email already exists.")
+        );
       db.selectByEmail(req.body.email, (err, user) => {
         if (err)
           return res.status(500).send("There was a problem getting user");
         let token = jwt.sign({ id: user.id }, config.secret, {
-          expiresIn: 86400 // expires in 24 hours
+          expiresIn: 86400, // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token, user: user });
       });
@@ -78,7 +83,7 @@ router.post("/login", (req, res) => {
     if (!passwordIsValid)
       return res.status(401).send({ auth: false, token: null });
     let token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
+      expiresIn: 86400, // expires in 24 hours
     });
     res.status(200).send({ auth: true, token: token, user: user });
   });
@@ -87,5 +92,5 @@ router.post("/login", (req, res) => {
 app.use(router);
 
 app.listen(3000, function () {
-  console.log('Listening on port 3000!')
+  console.log("Listening on port 3000!");
 });

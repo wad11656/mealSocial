@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img src="../assets/logo.png" width="500px" />
     <h4>Login</h4>
     <form>
       <label for="email">E-Mail Address</label>
@@ -56,6 +57,14 @@ export default {
           })
           .catch(function(error) {
             console.error(error.response);
+            if (
+              JSON.stringify(error.response.data) ==
+              '{"auth":false,"token":null}'
+            ) {
+              alert("Incorrect password.");
+            } else {
+              alert(JSON.stringify(error.response.data));
+            }
           });
       }
     }

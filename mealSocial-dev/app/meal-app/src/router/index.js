@@ -1,22 +1,22 @@
-import Vue from 'vue'
-import Router from "vue-router"
-import Recipe from '../views/Recipe.vue'
-import MealPlans from '../views/MealPlan.vue'
-import GroceryList from '../views/GroceryList.vue'
+import Vue from "vue";
+import Router from "vue-router";
+import Recipe from "../views/Recipe.vue";
+import MealPlans from "../views/MealPlan.vue";
+import GroceryList from "../views/GroceryList.vue";
 import HelloWorld from "@/components/HelloWorld";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
 import UserBoard from "@/components/UserBoard";
 import Admin from "@/components/Admin";
 
-Vue.use(Router)
+Vue.use(Router);
 
-  let router = new Router ({
-    mode: "history",
-    routes: [
+let router = new Router({
+  mode: "history",
+  routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
+      path: "/",
+      name: "HelloWorld",
       component: HelloWorld
     },
     {
@@ -36,19 +36,28 @@ Vue.use(Router)
       }
     },
     {
-      path: '/recipes',
-      name: 'Recipes',
-      component: Recipe
-    }, 
-    {
-      path: '/mealplans',
-      name: 'mealplans',
-      component: MealPlans
+      path: "/recipes",
+      name: "Recipes",
+      component: Recipe,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/grocerylist',
-      name: 'grocerylist',
-      component: GroceryList
+      path: "/mealplans",
+      name: "mealplans",
+      component: MealPlans,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/grocerylist",
+      name: "grocerylist",
+      component: GroceryList,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/userboard",
@@ -67,9 +76,8 @@ Vue.use(Router)
         is_admin: true
       }
     }
-]});
-
-
+  ]
+});
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -101,4 +109,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router
+export default router;
