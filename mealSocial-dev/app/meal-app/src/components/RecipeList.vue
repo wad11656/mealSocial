@@ -20,39 +20,40 @@
         <form class="newRecipeForm">
        
         <div class="formOption">
-          <label for="recipeName">Recipe Name: </label>
+          <label class="recipeName" for="recipeName">Recipe Name: </label>
           <input v-model="recipeName" type="text" name="recipeName">
         </div> 
         
         <div class="formOption"> 
-          <label for="imageUrl">Image URL: </label>
+          <label class="imageUrl" for="imageUrl">Image URL: &nbsp; </label>
           <input v-model="imageUrl" type="text" name="imageUrl">
         </div> 
 
         <div class="formOption"> 
-          <label for="notes">Notes: </label>
-          <input v-model="notes" type="text" name="notes">
+          <label for="notes">Directions: </label><br>
+          <textarea class="instructions" v-model="notes" type="textarea" name="notes"></textarea>
         </div>
 
         <h3>Ingredients</h3>
         <div class="formOption"> 
-          <label for="ingredientName">Ingredient Name: </label>
+          <label class="ingName" for="ingredientName">Ingredient Name: </label>
           <input v-model="ingredientName" type="text" name="ingredientName">
         </div>
 
         <div class="formOption"> 
-          <label for="measurement">Measurement: </label>
+          <label class = "measurement" for="measurement">Measurement: </label>
           <input v-model="measurement" type="text" name="measurement">
         </div>
 
-        <button type="button" v-on:click="addIngredient()">Add Ingredient</button>
+        <button class="ingredientButt" type="button" v-on:click="addIngredient()">Add Ingredient</button>
 
-        <ol>
-          <li v-for="(ingredient, index) in ingredientList" :key="ingredient.name">
-          {{ingredient.measurement}} {{ingredient.name}}
-          <button v-on:click="removeIngredient(index)">&times;</button>
-          </li>
-        </ol>
+        <div class="listContent">
+          <p class="ingredientEntry" v-for="(ingredient, index) in ingredientList" :key="ingredient.name">
+          {{ingredient.measurement}} | {{ingredient.name}}
+          <button class= "removeButt" v-on:click="removeIngredient(index)">&times;</button>
+          </p>
+        </div>
+        
         </form>
         <button v-if="newRecipe" type="submit" v-on:click="submitNewRecipe()">Submit</button>
         <button v-if="!newRecipe" type="submit" v-on:click="submitEditedRecipe()">Submit</button>
@@ -81,10 +82,12 @@ export default {
             notes: "",
             measurement: "",
             ingredientName: "",
-            selectedIngredient: {}
+            selectedIngredient: {}, 
+            userName: ""
         }
     },
     created() {
+        this.userName = JSON.parse(localStorage.getItem("user")).name;
         this.getRecipeData();
     },
     methods: {
@@ -97,7 +100,7 @@ export default {
           let ingredientPayload = {"ingredientList" : JSON.stringify(this.ingredientList)};
 
           IngredientService.createIngredient(ingredientPayload).then((response =>{
-            let recipePayload = {"recipeName": this.recipeName, "imageUrl": this.imageUrl, "notes": this.notes, "ingredientId": response.id};
+            let recipePayload = {"recipeName": this.recipeName, "imageUrl": this.imageUrl, "notes": this.notes, "ingredientId": response.id, "name": this.userName};
 
             RecipeService.createRecipe(recipePayload).then((response =>{
               this.recipeList.push(response);
@@ -125,7 +128,7 @@ export default {
           let ingredientPayload = {"ingredientList" : JSON.stringify(this.ingredientList)};
           this.editIngredientData(this.selectedRecipe.ingredientId, ingredientPayload)
 
-          let recipePayload = {"recipeName": this.recipeName, "imageUrl": this.imageUrl, "notes": this.notes, "ingredientId": this.selectedRecipe.ingredientId};
+          let recipePayload = {"recipeName": this.recipeName, "imageUrl": this.imageUrl, "notes": this.notes, "ingredientId": this.selectedRecipe.ingredientId, "name": this.userName};
           this.editRecipeData(this.selectedRecipe.id, recipePayload);
 
           this.closeModal(); 
@@ -163,7 +166,7 @@ export default {
         }, 
         
         async getRecipeData() {
-          RecipeService.getRecipes().then((recipeList => {
+          RecipeService.getRecipes(this.userName).then((recipeList => {
               this.$set(this, "recipeList", recipeList);
           }).bind(this));
         },
@@ -216,11 +219,11 @@ export default {
 }
 
 button {
-   background-color: #008CBA;;
-   color: white;
-   font-size: 16px;
-   padding: 16px 8px;
-   border-radius: 8px;
+  background-color: #008cba;
+  color: white;
+  font-size: 16px;
+  padding: 4px 12px;
+  border-radius: 8px;
 }
 
 .recipeCard {
@@ -289,6 +292,48 @@ button {
 }
 
 .formOption {
-    margin-top: 10px;
+    margin-top: 15px;
+    text-align: left;
 }
+
+.formOption input {
+  width: 60%;
+}
+
+.listContent {
+  width: 85%;
+  float: left;
+  margin-top: 2%;
+  margin-left: 15%;
+  text-align: left;
+}
+
+.removeButt {
+  float: right;
+  margin-right: 5%;
+}
+
+.instructions {
+  width: 75%;
+  height: 125px;
+  max-width: 100%;
+
+}
+
+.ingredientButt {
+  margin-top: 15px;
+}
+
+.recipeName {
+  margin-right:17px;
+}
+
+.imageUrl {
+  margin-right:33px;
+}
+
+.measurement {
+  margin-right: 20px;
+}
+
 </style>

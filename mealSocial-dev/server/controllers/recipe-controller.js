@@ -2,9 +2,10 @@ const data = require('../data/databaseConnection');
 
 exports.getRecipes = function(req, res, next) {
     let db = data.openDataConnection();
-    let sql = 'SELECT * FROM Recipe';
+    let params = [req.params.name]
+    let sql = 'SELECT * FROM Recipe WHERE name=?';
 
-    db.all(sql, [], (err, rows) => {
+    db.all(sql, params, (err, rows) => {
         if (err) {
             console.log(err);
             throw err;
@@ -17,8 +18,8 @@ exports.getRecipes = function(req, res, next) {
 
 exports.createRecipe = function(req, res, next) {
     let db = data.openDataConnection();
-    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId];
-    let sql = 'INSERT INTO Recipe(recipeName, imageUrl, notes, ingredientId) VALUES (?, ?, ?, ?)';
+    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId, req.body.name];
+    let sql = 'INSERT INTO Recipe(recipeName, imageUrl, notes, ingredientId, name) VALUES (?, ?, ?, ?, ?)';
 
     db.run(sql, params, (err) => {
         if (err) {
@@ -56,8 +57,8 @@ exports.getRecipeById = function(req, res, next) {
 
 exports.editRecipe = function(req, res, next) {
     let db = data.openDataConnection();
-    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId, req.params.id];
-    let sql = 'UPDATE Recipe SET recipeName=?, imageUrl=?, notes=?, ingredientId=?  WHERE id=?';
+    let params = [req.body.recipeName, req.body.imageUrl, req.body.notes, req.body.ingredientId, req.body.name, req.params.id];
+    let sql = 'UPDATE Recipe SET recipeName=?, imageUrl=?, notes=?, ingredientId=?, name=?  WHERE id=?';
 
     db.run(sql, params, (err) => {
         if (err) {

@@ -4,8 +4,8 @@ let RECIPE = "/recipes"
 let BASE_URL = "http://localhost:3000"
 
 export default {
-    async getRecipes() {
-        let res = await axios.get(BASE_URL + RECIPE);
+    async getRecipes(name) {
+        let res = await axios.get(BASE_URL + RECIPE + "/name/" + name);
         return res.data;
     },
 

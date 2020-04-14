@@ -13,7 +13,7 @@ paths:
   #            |        >>> Recipes <<<         |
   #             --------------------------------
   # ================= GET ALL RECIPES =================
-  /recipes:
+  /recipes/name/{name}:
     get:
       x-controller: recipe-controller
       x-operation: getRecipes
@@ -21,6 +21,13 @@ paths:
       - Recipes
       description: 'Obtain all recipes'' data'
       parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the recipe belongs to'
+          schema:
+            type: string
+            example: Wade
         - name: recipeLimit
           in: query
           description: 'The limit of recipes returned'
@@ -29,7 +36,6 @@ paths:
             minimum: 0
             maximum: 300
             example: 20
-        
         - name: pageLimit
           in: query
           description: 'The limit of recipe pages returned'
@@ -47,6 +53,7 @@ paths:
                 $ref: '#/components/schemas/RecipeArray'
   
     # ================= POST NEW RECIPE =================  
+  /recipes:
     post:
       x-controller: recipe-controller
       x-operation: createRecipe
@@ -729,6 +736,10 @@ components:
         ingredientId:
           type: integer
           example: 1
+
+        name:
+          type: string
+          example: 'Wade'
       
     # -------- RECIPES (List of Recipe IDs) --------
     Recipes:
