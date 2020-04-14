@@ -273,7 +273,7 @@ paths:
   #              |        >>> Meal Plans <<<      |
   #               --------------------------------
   # ================= GET ALL MEAL PLANS =================
-  /mealplans:
+  /mealplans/name/{name}:
     get:
       x-controller: mealPlans-controller
       x-operation: getMealPlans
@@ -281,6 +281,13 @@ paths:
       - Meal Plans
       description: 'Obtain all meal plans'' data'
       parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
         - name: mealplanLimit
           in: query
           description: 'The limit of meal plans returned'
@@ -313,6 +320,14 @@ paths:
       tags:
       - Meal Plans
       description: 'Creates a new meal plan'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
       requestBody:
         required: true
         content:
@@ -321,6 +336,13 @@ paths:
               $ref: '#/components/schemas/MealPlan'
       responses:
         201:
+          description: 'Successfully added a new meal plan'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+        415:
           description: 'Successfully added a new meal plan'
           headers:
             location:
@@ -378,6 +400,7 @@ paths:
           description: 'Successful edit of the meal plan with ID'
           
   # ================= DELETE MEAL PLAN BY ID =================
+  /mealplans/name/{name}/{id}:
     delete:
       x-controller: mealPlans-controller
       x-operation: deleteMealPlan
@@ -385,6 +408,13 @@ paths:
       - Meal Plans
       description: 'Delete ingredients with ID'
       parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
         - in: path
           name: id
           required: true
@@ -792,17 +822,23 @@ components:
           example: 17
           readOnly: true
           
-        mealplan name:
+        mealplanName:
           type: string
           example: 'M/W/F Main Courses'
           
         recipeIdList:
+          x-nullable: true
           type: string
           example: '1,2,3,4,5'
           
         date:
+          x-nullable: true
           type: string
           example: 'M/W/F'
+
+        name:
+          type: string
+          example: 'Rockwell'
           
     # -------- MEALPLANS (Array of MEALPLAN Objects) --------
     MealPlans:

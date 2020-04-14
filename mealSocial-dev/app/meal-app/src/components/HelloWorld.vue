@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <img src="../assets/logo.png" width="500px" />
-    <h1>This is homepage</h1>
+    <h1>Welcome to MealSocial!</h1>
     <h2>{{ msg }}</h2>
   </div>
 </template>
@@ -10,16 +10,18 @@
 export default {
   data() {
     return {
-      msg: "Hello World!"
+      msg: "Create and save your favorite recipes!"
     };
   }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Manjari:wght@700&display=swap");
 h1,
 h2 {
   font-weight: normal;
+  font-family: "Manjari", sans-serif;
 }
 ul {
   list-style-type: none;

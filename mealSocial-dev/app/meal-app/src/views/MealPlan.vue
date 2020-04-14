@@ -1,5 +1,45 @@
 <template>
-  <h1>MealPlans</h1>
+  <div class="mealPlanPage">
+    <h1>MealPlans</h1>
+    <button id="add" type="submit" @click="addNewMealPlan">Add New</button>
+    <div class="mealPlanCard" v-for="(mealPlan, index) in mealPlanList" :key="mealPlan.id">
+      <div class="container">
+        <div>
+          <h2>
+            {{mealPlan.mealPlanName}}
+            <button
+              id="delete"
+              type="submit"
+              @click="deleteMealPlan(mealPlan.id)"
+            >Delete</button>
+          </h2>
+          <select v-on:change="e => addRecipeToMealPlan(e, mealPlan.id)">
+            <option disabled selected value>Select recipe to add</option>
+            <option
+              v-for="selectable in allRecipes"
+              :value="selectable.id"
+              :key="selectable.id"
+            >{{selectable.recipeName}}</option>
+          </select>
+          <a href="#">change day</a>
+        </div>
+        <div
+          class="recipes"
+          v-for="(recipe, recipeIndex) in recipes[index]"
+          :key="recipe.recipeName"
+        >
+          <img :src="recipe.imageUrl" width="100px" />
+          <p>
+            {{recipe.recipeName}}
+            <a
+              href="#"
+              v-on:click="removeRecipeFromMealPlan(mealPlan.id, recipe.recipeId, recipeIndex)"
+            >delete</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -9,172 +49,161 @@ import RecipeService from "@/service/recipeService.js";
 export default {
   data() {
     return {
-      mealPranList: {},
-      selectedMealPlan: {},
-      recipeIdList: [],
-      modalEnabled: false,
-      newMealPlan: true,
-      name: "",
-      imageUrl: "",
-      date: ""
+      mealPlanList: [],
+      recipes: [],
+      allRecipes: [],
+      userName: ""
     };
   },
-  created() {
-    this.getMealPlanData();
+  async created() {
+    this.userName = JSON.parse(localStorage.getItem("user")).name;
+    const recipes = await this.getMealPlanData();
+    // console.log("RECIPES", recipes);
+    // console.log("MEALPLANLIST", this.mealPlanList);
+    this.recipes = recipes.filter(arr => arr.length > 0);
+    this.allRecipes = await RecipeService.getRecipes(this.userName);
+    // console.log("recipes", this.allRecipes);
   },
   methods: {
-    /*                       */
-    /* CREATE NEW (FRONTEND) */
-    /*                       */
-    addMealPlan() {
-      this.modalEnabled = true;
-      this.newMealPlan = true;
-    },
-    /*                       */
-    /* SUBMIT NEW (FRONTEND) */
-    /*                       */
-    submitNewMealplan() {
-      let mealPlanPayload = {
-        name: this.name,
-        recipeIdList: JSON.stringify(this.recipeIdList),
-        date: this.date
-      };
-      MealPlanService.createMealPlan(mealPlanPayload).then(response => {
-        this.mealPlanList.push(response);
-      });
-      this.closeModal();
-    },
-    /*                 */
-    /* EDIT (FRONTEND) */
-    /*                 */
-    editMealPlan(mealPlan) {
-      console.log(mealPlan);
-      this.modalEnabled = true;
-      this.newMealPlan = false;
-
-      this.name = mealPlan.name;
-      this.recipeIdList = mealPlan.recipeIdList;
-      this.date = mealPlan.date;
-      this.getRecipeListData(mealPlan.recipeIdList);
-      this.selectedMealPlan = mealPlan;
-
-      this.$forceUpdate();
-    },
-    /*                        */
-    /* SUBMIT EDIT (FRONTEND) */
-    /*                        */
-    submitEditedMealPlan() {
-      let mealPlanPayload = {
-        name: this.name,
-        recipeIdList: JSON.stringify(this.recipeIdList),
-        date: this.date
-      };
-      this.editMealPlanData(this.selectedMealPlan.id, mealPlanPayload);
-
-      this.closeModal();
-    },
-    /*                            */
-    /* DELETE MEALPLAN (FRONTEND) */
-    /*                            */
-    deleteMealPlan() {
-      this.deleteMealPlanData(this.selectedMealPlan.id);
-
-      this.closeModal();
-    },
-    removeIngredient(index) {
-      this.$delete(this.ingredientList, index);
-    },
-    /*                        */
-    /* CLOSE MODAL (FRONTEND) */
-    /*                        */
-    closeModal() {
-      this.modalEnabled = false;
-      this.recipeIdList = [];
-      this.name = "";
-      this.imageUrl = "";
-      this.date = "";
-      this.selectedMealPlan = {};
-    },
-    /* ====================================== */
-    /* ====================================== */
-    /* ====================================== */
-    /*                             */
-    /* GET ALL MEALPLANS (BACKEND) */
-    /*                             */
     async getMealPlanData() {
-      MealPlanService.getMealPlans().then(
-        (recipeList => {
-          this.$set(this, "recipeList", recipeList);
+      return MealPlanService.getMealPlans(this.userName).then(
+        (async mealPlanList => {
+          this.$set(this, "mealPlanList", mealPlanList);
+          const recipes = await Promise.all(
+            mealPlanList.map(async mealPlan => {
+              const ids = (mealPlan.recipeIdList || "").split(",");
+              return await Promise.all(
+                ids
+                  .filter(el => el)
+                  .map(async id => {
+                    return await RecipeService.getOneRecipe(id).then(recipe => {
+                      return {
+                        id: mealPlan.id,
+                        mealPlanName: mealPlan.mealPlanName,
+                        recipeName: recipe.recipeName,
+                        recipeId: recipe.id,
+                        imageUrl: recipe.imageUrl
+                      };
+                    });
+                  })
+              );
+            })
+          );
+          return recipes;
         }).bind(this)
       );
     },
-    /*                               */
-    /* GET SINGLE MEALPLAN (BACKEND) */
-    /*                               */
-    async getSingleMealPlanData(id) {
-      MealPlanService.getOneMealPlan(id).then(selectedMealPlan => {
-        this.$set(this, "selectedMealPlan", selectedMealPlan);
+    async addRecipeToMealPlan(event, mealPlanId) {
+      const value = event.target.value;
+      const mealPlan = this.mealPlanList.find(mp => mp.id === mealPlanId);
+      const ids = [...(mealPlan.recipeIdList || "").split(","), value]
+        .filter(el => el !== "")
+        .join(",");
+      MealPlanService.editMealPlan(mealPlanId, {
+        ...mealPlan,
+        recipeIdList: ids
+      }).then(async () => {
+        this.recipes = await this.getMealPlanData();
+        // recipes: [[{ mealPLanId: 1, recipeId: 0}, { mealPLanId: 1, recipeId: 1}], ...]
       });
     },
-    /*                         */
-    /* EDIT MEALPLAN (BACKEND) */
-    /*                         */
-    async editMealPlanData(id, payload) {
-      MealPlanService.editMealPlan(id, payload).then(response => {
-        console.log(response);
-        this.getMealPlanData();
-        // this.recipeList.$forceUpdate;
-      });
-    },
-    /*                           */
-    /* DELETE MEALPLAN (BACKEND) */
-    /*                           */
-    async deleteMealPlanData(id) {
-      MealPlanService.deleteMealPlan(id).then(response => {
-        console.log(response);
-        this.getMealPlanData();
-      });
-    },
-    /*                           */
-    /* GET ALL RECIPES (BACKEND) */
-    /*                           */
-    async getRecipeData() {
-      RecipeService.getRecipes().then(
-        (recipeList => {
-          this.$set(this, "recipeList", recipeList);
-        }).bind(this)
-      );
-    },
-    /*                             */
-    /* GET SINGLE RECIPE (BACKEND) */
-    /*                             */
     async getSingleRecipeData(id) {
-      RecipeService.getOneRecipe(id).then(selectedRecipe => {
-        this.$set(this, "selectedRecipe", selectedRecipe);
+      RecipeService.getOneRecipe(id);
+    },
+    async removeRecipeFromMealPlan(mealPlanId, recipeId, recipeIndex) {
+      // console.log("recipe index", recipeIndex);
+      const mealPlan = this.mealPlanList.find(mp => mp.id === mealPlanId);
+      const ids = (mealPlan.recipeIdList || "")
+        .split(",")
+        .filter((id, i) => i !== recipeIndex);
+      // if (ids.length > 0) {
+      MealPlanService.editMealPlan(mealPlanId, {
+        ...mealPlan,
+        recipeIdList: ids.join(",")
+      }).then(async () => {
+        this.recipes = await this.getMealPlanData();
+        // recipes: [[{ mealPLanId: 1, recipeId: 0}, { mealPLanId: 1, recipeId: 1}], ...]
+      });
+      // } else {
+      //   alert("Please keep at least 1 item in a MealPlan!");
+      // }
+      // console.log(ids);
+      // console.log(recipeId);
+    },
+    async addNewMealPlan() {
+      MealPlanService.createMealPlan(this.userName, {
+        mealPlanName: prompt("Meal Plan Name"),
+        name: this.userName,
+        date: "",
+        recipeIdList: null
+      }).then(async () => {
+        this.recipes = await this.getMealPlanData();
+        // recipes: [[{ mealPLanId: 1, recipeId: 0}, { mealPLanId: 1, recipeId: 1}], ...]
       });
     },
-    /*                       */
-    /* EDIT RECIPE (BACKEND) */
-    /*                       */
-    async editRecipeData(id, payload) {
-      RecipeService.editRecipe(id, payload).then(response => {
-        console.log(response);
-        this.getRecipeData();
-        // this.recipeList.$forceUpdate;
-      });
-    },
-    /*                         */
-    /* DELETE RECIPE (BACKEND) */
-    /*                         */
-    async deleteRecipeData(id) {
-      RecipeService.deleteRecipe(id).then(response => {
-        console.log(response);
-        this.getRecipeData();
-      });
+    async deleteMealPlan(mealPlanId) {
+      MealPlanService.deleteMealPlan(this.userName, mealPlanId).then(
+        async () => {
+          this.recipes = await this.getMealPlanData();
+          // recipes: [[{ mealPLanId: 1, recipeId: 0}, { mealPLanId: 1, recipeId: 1}], ...]
+        }
+      );
     }
-  } // end of methods {}
-}; // end of export default {}
+  }
+};
 </script>
 
-<style scoped >
+
+<style scoped>
+button#delete {
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Manjari", sans-serif;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+button#add:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid red;
+}
+button#add {
+  background-color: #4caf50; /* Green */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Manjari", sans-serif;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+button#add:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid #4caf50;
+}
+.recipes {
+  max-width: 30%;
+  display: inline-block;
+  padding: 10px;
+}
+
+.mealPlanCard {
+  width: 100%;
+  clear: both;
+  margin: 0 auto;
+}
 </style>

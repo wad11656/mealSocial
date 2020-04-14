@@ -38,7 +38,7 @@ router.post("/register", function (req, res) {
           res
             .status(500)
             //.send("There was a problem registering the user.");
-            .send("A user with that email already exists.")
+            .send("A user with that email or name already exists.")
         );
       db.selectByEmail(req.body.email, (err, user) => {
         if (err)
@@ -78,7 +78,7 @@ router.post("/register-admin", function (req, res) {
 router.post("/login", (req, res) => {
   db.selectByEmail(req.body.email, (err, user) => {
     if (err) return res.status(500).send("Error on the server.");
-    if (!user) return res.status(404).send("No user found.");
+    if (!user) return res.status(404).send("User not found.");
     let passwordIsValid = bcrypt.compareSync(req.body.password, user.user_pass);
     if (!passwordIsValid)
       return res.status(401).send({ auth: false, token: null });

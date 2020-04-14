@@ -1,28 +1,28 @@
 <template>
   <div>
     <img src="../assets/logo.png" width="500px" />
-    <h4>Register</h4>
+    <h1>Register a New User</h1>
     <form>
       <label for="name">Name</label>
       <div>
         <input id="name" type="text" v-model="name" required autofocus />
       </div>
-
+      <br />
       <label for="email">E-Mail Address</label>
       <div>
         <input id="email" type="email" v-model="email" required />
       </div>
-
+      <br />
       <label for="password">Password</label>
       <div>
         <input id="password" type="password" v-model="password" required />
       </div>
-
+      <br />
       <label for="password-confirm">Confirm Password</label>
       <div>
         <input id="password-confirm" type="password" v-model="password_confirmation" required />
       </div>
-
+      <br />
       <label for="password-confirm">Is this an administrator account?</label>
       <div>
         <select v-model="is_admin">
@@ -98,3 +98,26 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+button {
+  background-color: #399cbd; /* Green */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Manjari", sans-serif;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid #399cbd;
+}
+</style>
