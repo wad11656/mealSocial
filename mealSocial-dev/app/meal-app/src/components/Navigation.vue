@@ -96,6 +96,7 @@
             </td>
           </tr>
         </table>
+
         <span v-if="!loggedIn">&nbsp;|&nbsp;</span>
         <router-link id="register" to="/register" v-if="!loggedIn">
           <b>Register</b>
@@ -107,6 +108,9 @@
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Manjari:wght@700&display=swap");
 
+img {
+  -webkit-filter: drop-shadow(4px 2px 2px rgba(150, 150, 150, 1));
+}
 table#rightside {
   width: 100%;
   table-layout: fixed;
@@ -137,6 +141,7 @@ td:hover a,
   color: white;
   font-family: "Manjari", sans-serif;
   font-size: 30px;
+  text-shadow: 4px 2px 2px rgba(150, 150, 150, 1);
 }
 #logout {
   color: white;

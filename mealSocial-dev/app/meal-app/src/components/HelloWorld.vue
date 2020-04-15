@@ -12,7 +12,7 @@
 export default {
   data() {
     return {
-      msg: "Create and save your favorite recipes!"
+      msg: "Manage your favorite recipes and meals!"
     };
   }
 };

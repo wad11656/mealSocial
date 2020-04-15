@@ -4,10 +4,11 @@
       <img src="../assets/admin_user.jpg" width="400px" />
       <h1>Administrator Console</h1>
       <h2>
-        <i>{{msg}}</i>
+        <i>{{ msg }}</i>
       </h2>
     </div>
-    <div class="employees">
+    <div class="users">
+      <br />
       <table width="100%">
         <tr>
           <td></td>
@@ -33,11 +34,11 @@
               id="trash"
               v-on:click="deleteUserData(user.id)"
               src="../assets/trash.png"
-              width="60px"
+              width="50px"
             />
           </td>
-          <td>{{user.name}}</td>
-          <td>{{user.email}}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
           <td>
             <input
               type="checkbox"
@@ -99,19 +100,23 @@ export default {
 <style scoped>
 input[type="checkbox" i] {
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 #trash {
   cursor: pointer;
 }
-.employees {
+.users {
   text-align: left;
-  font-size: 40px;
+  font-size: 30px;
 }
 h1,
 h2 {
   font-weight: normal;
+  margin-top: -20px;
+}
+h1 {
+  font-size: 50px;
 }
 h2 {
   color: goldenrod;

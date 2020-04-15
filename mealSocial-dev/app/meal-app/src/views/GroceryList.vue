@@ -1,6 +1,12 @@
 <template>
   <div class="groceryList">
-    <h1>Your Grocery List</h1>
+    <h1>
+      My Grocery List <br /><img
+        src="../assets/shopping.png"
+        width="100px"
+        style="-webkit-filter: drop-shadow(4px 2px 2px rgba(150, 150, 150, 1));"
+      />
+    </h1>
     <span>
       <input
         v-model="newGroceryItem"
@@ -13,8 +19,10 @@
 
     <div class="listContent">
       <p v-for="(item, index) in groceryList" :key="item">
-        {{item}}
-        <button v-on:click="removeGroceryItem(index)" class="removeButt">&times;</button>
+        {{ item }}
+        <button v-on:click="removeGroceryItem(index)" class="removeButt">
+          &times;
+        </button>
       </p>
       <button v-on:click="saveList()" class="saveButt">Save</button>
     </div>
@@ -71,6 +79,10 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-size: 50px;
+  text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.79);
+}
 .groceryList {
   position: fixed;
   top: 55%;
@@ -106,6 +118,7 @@ export default {
 .removeButt {
   float: right;
   margin-right: 15%;
+  margin-top: -10px;
 }
 
 .saveButt {

@@ -1,7 +1,11 @@
 <template>
   <div class="recipePage">
     <h1 class="title">
-      My Recipes
+      <img
+        src="../assets/recipe.png"
+        width="100px"
+        style="vertical-align: middle; -webkit-filter: drop-shadow(4px 2px 2px rgba(150, 150, 150, 1));"
+      />My Recipes
       <button class="addButton" v-on:click="addRecipe()">New Recipe</button>
     </h1>
     <div
@@ -12,7 +16,7 @@
     >
       <img class="cardImage" :src="recipe.imageUrl" alt="Recipe Image" />
       <div class="container">
-        <p>{{recipe.recipeName}}</p>
+        <p>{{ recipe.recipeName }}</p>
       </div>
     </div>
 
@@ -38,7 +42,12 @@
           <div class="formOption">
             <label for="notes">Directions:</label>
             <br />
-            <textarea class="instructions" v-model="notes" type="textarea" name="notes"></textarea>
+            <textarea
+              class="instructions"
+              v-model="notes"
+              type="textarea"
+              name="notes"
+            ></textarea>
           </div>
 
           <h3>Ingredients</h3>
@@ -52,7 +61,13 @@
             <input v-model="measurement" type="text" name="measurement" />
           </div>
 
-          <button class="ingredientButt" type="button" v-on:click="addIngredient()">Add Ingredient</button>
+          <button
+            class="ingredientButt"
+            type="button"
+            v-on:click="addIngredient()"
+          >
+            Add Ingredient
+          </button>
 
           <div class="listContent">
             <p
@@ -60,17 +75,26 @@
               v-for="(ingredient, index) in ingredientList"
               :key="ingredient.name"
             >
-              {{ingredient.measurement}} | {{ingredient.name}}
-              <button
-                class="removeButt"
-                v-on:click="removeIngredient(index)"
-              >&times;</button>
+              {{ ingredient.measurement }} | {{ ingredient.name }}
+              <button class="removeButt" v-on:click="removeIngredient(index)">
+                &times;
+              </button>
             </p>
           </div>
         </form>
-        <button v-if="newRecipe" type="submit" v-on:click="submitNewRecipe()">Submit</button>
-        <button v-if="!newRecipe" type="submit" v-on:click="submitEditedRecipe()">Submit</button>
-        <button v-if="!newRecipe" type="submit" v-on:click="deleteRecipe()">DELETE</button>
+        <button v-if="newRecipe" type="submit" v-on:click="submitNewRecipe()">
+          Submit
+        </button>
+        <button
+          v-if="!newRecipe"
+          type="submit"
+          v-on:click="submitEditedRecipe()"
+        >
+          Submit
+        </button>
+        <button v-if="!newRecipe" type="submit" v-on:click="deleteRecipe()">
+          DELETE
+        </button>
       </div>
     </div>
   </div>
@@ -311,10 +335,11 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped>
 .addButton {
   float: right;
   font-size: 22px;
+  margin-right: 10%;
   padding: 18px 16px 14px 16px;
   cursor: pointer;
   transition-duration: 0.4s;
@@ -350,6 +375,7 @@ button {
 /* On mouse-over, add a deeper shadow */
 .recipeCard:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 /* Add some padding inside the card container */
@@ -451,5 +477,8 @@ button {
 
 .title {
   font-size: 60px;
+  color: #3792cb;
+  text-shadow: 2px 1px 2px rgba(150, 150, 150, 0.79);
+  margin-left: 15%;
 }
 </style>
