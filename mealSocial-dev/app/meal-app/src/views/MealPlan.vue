@@ -1,7 +1,9 @@
 <template>
   <div class="mealPlanPage">
-    <h1>MealPlans</h1>
-    <button id="add" type="submit" @click="addNewMealPlan">Add New</button>
+    <h1 id="title">
+      My MealPlans
+      <button id="add" type="submit" @click="addNewMealPlan">New MealPlan</button>
+    </h1>
     <div class="mealPlanCard" v-for="(mealPlan, index) in mealPlanList" :key="mealPlan.id">
       <div class="container">
         <div>
@@ -176,11 +178,11 @@ button#add:hover {
   border: 2px solid red;
 }
 button#add {
-  background-color: #4caf50; /* Green */
+  background-color: #daa520; /* Green */
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 16px 32px;
+  padding: 18px 16px 14px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -189,6 +191,8 @@ button#add {
   margin: 4px 2px;
   transition-duration: 0.4s;
   cursor: pointer;
+  float: right;
+  font-size: 22px;
 }
 button#add:hover {
   background-color: white;
@@ -205,5 +209,9 @@ button#add:hover {
   width: 100%;
   clear: both;
   margin: 0 auto;
+}
+
+#title {
+  font-size: 60px;
 }
 </style>

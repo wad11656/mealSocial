@@ -38,7 +38,7 @@ router.post("/register", function (req, res) {
           res
             .status(500)
             //.send("There was a problem registering the user.");
-            .send("A user with that email or name already exists.")
+            .send("A user with that EMAIL or NAME already exists.")
         );
       db.selectByEmail(req.body.email, (err, user) => {
         if (err)
@@ -61,7 +61,7 @@ router.post("/register-admin", function (req, res) {
           res
             .status(500)
             //.send("There was a problem registering the user.");
-            .send("A user with that email already exists.")
+            .send("A user with that EMAIL or NAME already exists.")
         );
       db.selectByEmail(req.body.email, (err, user) => {
         if (err)

@@ -79,12 +79,14 @@
 <script>
 import RecipeService from "@/service/recipeService.js";
 import IngredientService from "@/service/ingredientsService.js";
+import MealPlanService from "@/service/mealPlanService.js";
 
 export default {
   data() {
     return {
       recipeList: {},
       selectedRecipe: {},
+      mealPlanList: [],
       ingredientList: [],
       modalEnabled: false,
       newRecipe: true,
@@ -102,6 +104,69 @@ export default {
     this.getRecipeData();
   },
   methods: {
+    async getMealPlanData() {
+      return MealPlanService.getMealPlans(this.userName).then(
+        (async mealPlanList => {
+          this.$set(this, "mealPlanList", mealPlanList);
+          const recipes = await Promise.all(
+            mealPlanList.map(async mealPlan => {
+              const ids = (mealPlan.recipeIdList || "").split(",");
+              return await Promise.all(
+                ids
+                  .filter(el => el)
+                  .map(async id => {
+                    return await RecipeService.getOneRecipe(id).then(recipe => {
+                      console.log("GETONERECIPE CALLED");
+                      return {
+                        id: mealPlan.id,
+                        mealPlanName: mealPlan.mealPlanName,
+                        recipeName: recipe.recipeName,
+                        recipeId: recipe.id,
+                        imageUrl: recipe.imageUrl
+                      };
+                    });
+                  })
+              );
+            })
+          );
+          return recipes;
+        }).bind(this)
+      );
+    },
+
+    async removeRecipeFromMealPlan(mealPlanId, recipeId) {
+      const mealPlan = this.mealPlanList.find(mp => mp.id === mealPlanId);
+      const ids = (mealPlan.recipeIdList || "")
+        .split(",")
+        .filter(id => id !== recipeId.toString());
+      console.log(ids);
+      MealPlanService.editMealPlan(mealPlanId, {
+        ...mealPlan,
+        recipeIdList: ids.join(",")
+      });
+    },
+
+    async deleteRecipe() {
+      const mealPlans = await this.getMealPlanData();
+      this.deleteIngredientData(this.selectedRecipe.ingredientId);
+      this.deleteRecipeData(this.selectedRecipe.id);
+
+      const mealPlansWithRecipe = mealPlans.flat().filter(mealPlan => {
+        console.log("mealPlan", mealPlan);
+        return mealPlan.recipeId == this.selectedRecipe.id;
+      });
+      console.log(mealPlansWithRecipe);
+
+      const hey = await Promise.all(
+        mealPlansWithRecipe.map(mealPlan =>
+          this.removeRecipeFromMealPlan(mealPlan.id, mealPlan.recipeId)
+        )
+      );
+      console.log(hey);
+
+      this.closeModal();
+    },
+
     addRecipe() {
       this.modalEnabled = true;
       this.newRecipe = true;
@@ -160,13 +225,6 @@ export default {
         name: this.userName
       };
       this.editRecipeData(this.selectedRecipe.id, recipePayload);
-
-      this.closeModal();
-    },
-
-    deleteRecipe() {
-      this.deleteIngredientData(this.selectedRecipe.ingredientId);
-      this.deleteRecipeData(this.selectedRecipe.id);
 
       this.closeModal();
     },
@@ -257,6 +315,14 @@ export default {
 .addButton {
   float: right;
   font-size: 22px;
+  padding: 18px 16px 14px 16px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+.addButton:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid #008cba;
 }
 
 button {
