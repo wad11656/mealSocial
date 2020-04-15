@@ -9,7 +9,7 @@
 1. Install **Docker** on your host machine. [ https://docs.docker.com/get-docker/ ]
 
 1. In a PowerShell/terminal, Navigate to the same directory where `docker-compose.yml` is stored and run :
-`docker-compose up`
+`docker-compose up --build`
 
 1. The `docker-compose` will spin up the `backend` server, followed by the `frontend` server.
 
