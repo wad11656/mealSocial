@@ -1,0 +1,936 @@
+openapi: 3.0.0
+info:
+  version: '0.1'
+  title: 'Mealplan API'
+  description: 'An API for obtaining and posting mealplan data for Wade and Rockwell''s social media web app'
+# Added by API Auto Mocking Plugin
+servers:
+  - description: 'SwaggerHub API Auto Mocking'
+    url: https://virtserver.swaggerhub.com/mealplan410/Mealplan410/0.1
+
+paths: 
+  #             --------------------------------
+  #            |        >>> Recipes <<<         |
+  #             --------------------------------
+  # ================= GET ALL RECIPES =================
+  /recipes/name/{name}:
+    get:
+      x-controller: recipe-controller
+      x-operation: getRecipes
+      tags:
+      - Recipes
+      description: 'Obtain all recipes'' data'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the recipe belongs to'
+          schema:
+            type: string
+            example: Wade
+        - name: recipeLimit
+          in: query
+          description: 'The limit of recipes returned'
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 300
+            example: 20
+        - name: pageLimit
+          in: query
+          description: 'The limit of recipe pages returned'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: 'Successful pull of all recipes'' data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeArray'
+  
+    # ================= POST NEW RECIPE =================  
+  /recipes:
+    post:
+      x-controller: recipe-controller
+      x-operation: createRecipe
+      tags:
+      - Recipes
+      description: 'Creates a new recipe'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        200:
+          description: 'Successfully created a new recipe'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+
+  # ================= GET RECIPE BY ID =================                    
+  /recipes/{id}:
+    get:
+      x-controller: recipe-controller
+      x-operation: getRecipeById
+      tags:
+      - Recipes
+      description: 'Obtain recipe data by id'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 4
+      responses:
+        200:
+          description: 'Successful pull of recipe data by ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+  
+  # ================= PUT RECIPE BY ID =================
+    put:
+      x-controller: recipe-controller
+      x-operation: editRecipe
+      tags:
+      - Recipes
+      description: 'Change recipe'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 4
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        200:
+          description: 'Successfully edited the existing recipe'
+          
+  # ================= DELETE RECIPE BY ID =================
+    delete:
+      x-controller: recipe-controller
+      x-operation: deleteRecipe
+      tags:
+      - Recipes
+      description: 'Delete recipe'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 4
+      responses:
+        200:
+          description: 'Successfully Deleted the existing recipe'
+  #               --------------------------------
+  #              |       >>> Ingredients <<<      |
+  #               --------------------------------
+  # ================= GET ALL INGREDIENTS =================
+  /ingredients:
+    get:
+      x-controller: ingredients-controller
+      x-operation: getIngredients  
+      tags:
+      - Ingredients
+      description: 'Obtain all ingredients'' data'
+      parameters:
+        - name: ingredientLimit
+          in: query
+          description: 'The limit of ingredients returned'
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 300
+            example: 20
+        
+        - name: pageLimit
+          in: query
+          description: 'The limit of ingredient pages returned'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: 'Successful pull of all ingredients'' data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientArray'
+                
+    # ================= POST NEW INGREDIENT =================  
+    post:
+      x-controller: ingredients-controller
+      x-operation: createIngredient
+      tags:
+      - Ingredients
+      description: 'Creates a new recipe'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        200:
+          description: 'Successfully added a new ingredient'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+
+                
+  # ================= GET INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
+  /ingredients/{id}:
+    get:
+      x-controller: ingredients-controller
+      x-operation: getIngredientById
+      tags:
+      - Ingredients
+      description: 'Obtain ingredient by [id]'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 37
+      responses:
+        200:
+          description: 'Successful pull of ingredient by [recipe id + ingredient id]'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+                
+  # ================= PUT INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
+    put:
+      x-controller: ingredients-controller
+      x-operation: editIngredient
+      tags:
+      - Ingredients
+      description: 'Edit ingredient by [id]'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 37
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        200:
+          description: 'Successful edited the ingredient with [recipe id + ingredient id]'
+          
+  # ================= DELETE INGREDIENT BY [RECIPE ID + INGREDIENT ID] =================
+    delete:
+      x-controller: ingredients-controller
+      x-operation: deleteIngredient
+      tags:
+      - Ingredients
+      description: 'Delete ingredient with [id]'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the recipe'
+          schema:
+            type: integer
+            example: 37
+      responses:
+        200:
+          description: 'Successful deleted the ingredient with [recipe id + ingredient id]'
+  #               --------------------------------
+  #              |        >>> Meal Plans <<<      |
+  #               --------------------------------
+  # ================= GET ALL MEAL PLANS =================
+  /mealplans/name/{name}:
+    get:
+      x-controller: mealPlans-controller
+      x-operation: getMealPlans
+      tags:
+      - Meal Plans
+      description: 'Obtain all meal plans'' data'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
+        - name: mealplanLimit
+          in: query
+          description: 'The limit of meal plans returned'
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 300
+            example: 20
+        
+        - name: pageLimit
+          in: query
+          description: 'The limit of meal plan pages returned'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: 'Successful pull of all meal plans'' data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealPlanArray'
+                
+    # ================= POST NEW MEAL PLAN =================  
+    post:
+      x-controller: mealPlans-controller
+      x-operation: createMealPlan
+      tags:
+      - Meal Plans
+      description: 'Creates a new meal plan'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealPlan'
+      responses:
+        201:
+          description: 'Successfully added a new meal plan'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+        415:
+          description: 'Successfully added a new meal plan'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+
+  # ================= GET MEAL PLAN BY ID =================
+  /mealplans/{id}:
+    get:
+      x-controller: mealPlans-controller
+      x-operation: getMealPlanById
+      tags:
+      - Meal Plans
+      description: 'Obtain ingredients by meal plan ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the meal plan'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful pull of meal plan by ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealPlan'
+                
+  # ================= PUT MEAL PLAN BY ID =================
+    put:
+      x-controller: mealPlans-controller
+      x-operation: editMealPlan
+      tags:
+      - Meal Plans
+      description: 'Edit ingredients with meal plan with ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the meal plan'
+          schema:
+            type: integer
+            example: 17
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealPlan'
+      responses:
+        200:
+          description: 'Successful edit of the meal plan with ID'
+          
+  # ================= DELETE MEAL PLAN BY ID =================
+  /mealplans/name/{name}/{id}:
+    delete:
+      x-controller: mealPlans-controller
+      x-operation: deleteMealPlan
+      tags:
+      - Meal Plans
+      description: 'Delete ingredients with ID'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: 'The name of the user the mealplan belongs to'
+          schema:
+            type: string
+            example: Rockwell
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the meal plan'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful Delete the meal plan with ID'
+  
+  #           -----------------------------
+  #          |        >>> Users <<<        |
+  #           -----------------------------
+  # ================= GET ALL USERS =================
+  /users:
+    get:
+      x-controller: user-controller
+      x-operation: getUsers
+      tags:
+      - Users
+      description: 'Obtain all users'' data'
+      parameters:
+        - name: userLimit
+          in: query
+          description: 'The limit of users returned'
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 300
+            example: 20
+        
+        - name: pageLimit
+          in: query
+          description: 'The limit of user pages returned'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: 'Successful pull of all users'' data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+                
+    # ================= POST NEW USER =================  
+    post:
+      x-controller: user-controller
+      x-operation: createUser
+      tags:
+      - Users
+      description: 'Creates a new user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: 'Successfully added a new user'
+          headers:
+            location:
+              description: 'resultant URI of POST new User'
+              schema:
+                type: string
+        400:
+          description: 'Failed to add a new user, Username must be unique.'
+          headers:
+            location:
+              description: 'resultant URI of a failed POST new User'
+              schema:
+                type: string
+
+  # ================= GET USER BY ID =================
+  /users/{id}:
+    get:
+      x-controller: user-controller
+      x-operation: getUserById
+      tags:
+      - Users
+      description: 'Obtain ingredients by user ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the user'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful pull of user by ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                
+  # ================= PUT USER BY ID =================
+    put:
+      x-controller: user-controller
+      x-operation: editUser
+      tags:
+      - Users
+      description: 'Edit ingredients of user with ID'
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the user'
+          schema:
+            type: integer
+            example: 17
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: 'Successful edit of the user with ID'
+          
+   # ================= DELETE USER BY ID =================
+    delete:
+      x-controller: user-controller
+      x-operation: deleteUser
+      tags:
+      - Users
+      description: 'Delete ingredients of user with ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the user'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful Deleted the user with ID'
+  #           ------------------------------------
+  #          |        >>> Grocery Lists <<<       |
+  #           ------------------------------------
+  # ================= GET ALL GROCERY LISTS =================
+  /grocerylists:
+    get:
+      x-controller: groceryList-controller
+      x-operation: getGroceryLists
+      tags:
+      - Grocery Lists
+      description: 'Obtain all grocery lists'' data'
+      parameters:
+        - name: grocerylistLimit
+          in: query
+          description: 'The limit of grocery lists returned'
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 300
+            example: 20
+        
+        - name: pageLimit
+          in: query
+          description: 'The limit of grocery list pages returned'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: 'Successful pull of all grocery lists'' data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryLists'
+                
+    # ================= POST NEW GROCERY LIST =================  
+    post:
+      x-controller: groceryList-controller
+      x-operation: createGroceryList
+      tags:
+      - Grocery Lists
+      description: 'Creates a new grocery list'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroceryList'
+      responses:
+        201:
+          description: 'Successfully added a new grocery list'
+          headers:
+            location:
+              description: 'resultant URI of POST new recipe'
+              schema:
+                type: string
+
+  # ================= GET GROCERY LIST BY ID =================
+  /grocerylists/{id}:
+    get:
+      x-controller: groceryList-controller
+      x-operation: getGroceryListById
+      tags:
+      - Grocery Lists
+      description: 'Obtain grocery list by ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the grocery list'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful pull of grocery list by ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryList'     
+                
+  # ================= PUT GROCERY LIST BY ID =================
+    put:
+      x-controller: groceryList-controller
+      x-operation: editGroceryList
+      tags:
+      - Grocery Lists
+      description: 'Edit grocery list by ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the grocery list'
+          schema:
+            type: integer
+            example: 17
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroceryList'
+      responses:
+        200:
+          description: 'Successful edit of grocery list by ID'   
+          
+  # ================= DELETE GROCERY LIST BY ID =================
+    delete:
+      x-controller: groceryList-controller
+      x-operation: deleteGroceryList
+      tags:
+      - Grocery Lists
+      description: 'Delete grocery list by ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the grocery list'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful deleted the grocery list by ID'
+          
+  #           ------------------------------------
+  #          |        >>> Session Management <<<       |
+  #           ------------------------------------
+  
+  # ================= POST NEW USER SESSION =================
+  
+  # /login:
+  #   post:
+  #     x-controller: session-controller
+  #     x-operation: login
+  #     tags:
+  #     - Session Management
+  #     description: 'Login User'
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/UserLogin'
+  #     responses:
+  #       201:
+  #         description: 'Successfully added a new grocery list'
+  #         headers:
+  #           location:
+  #             description: 'resultant URI of POST new recipe'
+  #             schema:
+  #               type: string
+          
+  # ================= DELETE EXISTING USER SESSION =================
+  
+  /logout/{id}:
+    delete:
+      x-controller: session-controller
+      x-operation: logout
+      tags:
+      - Session Management
+      description: 'Logout User with ID'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: 'The ID of the User'
+          schema:
+            type: integer
+            example: 17
+      responses:
+        200:
+          description: 'Successful logged out the User with ID'
+  
+#            -------------------------------------------
+#           |  >>> Definitions (a.k.a. Components) <<<  |
+#            -------------------------------------------
+components:
+  schemas:
+  
+    # -------- RECIPE (Object) --------
+    Recipe:
+      description: 'Recipe data model'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+          readOnly: true
+          
+        recipeName:
+          type: string
+          example: 'Mama''s Meatloaf'
+          
+        imageUrl:
+          type: string
+          example: 'myimageurl.com'
+          
+        notes:
+          type: string
+          example: 'My favorite meatloaf!'
+          
+        ingredientId:
+          type: integer
+          example: 1
+
+        name:
+          type: string
+          example: 'Wade'
+      
+    # -------- RECIPES (List of Recipe IDs) --------
+    Recipes:
+      description: 'List of Recipe ID'
+      type: string
+      example: '1,2,3,4,5'
+    
+     # -------- RECIPESARRAY (List of Recipe IDs) --------
+    RecipeArray:
+      description: 'Array of Recipe data'
+      type: array
+      items:
+        $ref: '#/components/schemas/Recipe' 
+        
+    # -------- INGREDIENT (Object) --------
+    Ingredient:
+      description: 'Ingredient data model'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 37
+          readOnly: true
+          
+        ingredientList:
+          type: string
+          example: '[{"name":"Diced Onions","measurement":"1 Cup"},{"name":"Garlic","measurement":"1 Teaspoon"}]'
+
+          
+    # -------- INGREDIENTS (Array of INGREDIENT Objects) --------
+    Ingredients:
+      description: 'List of Ingredient data'
+      type: string
+      example: '1,2,3,4,5'
+      
+    # -------- INGREDIENTSSARRAY (List of Recipe IDs) --------
+    IngredientArray:
+      description: 'Array of Ingredient data'
+      type: array
+      items:
+        $ref: '#/components/schemas/Ingredient'
+        
+    # -------- MEALPLAN (Object) --------
+    MealPlan:
+      description: 'MealPlan data model'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 17
+          readOnly: true
+          
+        mealplanName:
+          type: string
+          example: 'M/W/F Main Courses'
+          
+        recipeIdList:
+          x-nullable: true
+          type: string
+          example: '1,2,3,4,5'
+          
+        date:
+          x-nullable: true
+          type: string
+          example: 'M/W/F'
+
+        name:
+          type: string
+          example: 'Rockwell'
+          
+    # -------- MEALPLANS (Array of MEALPLAN Objects) --------
+    MealPlans:
+      description: 'Array of MealPlan data'
+      type: string
+      example: '1,2,3,4,5'
+      
+    # -------- MealPlanSARRAY (List of Recipe IDs) --------
+    MealPlanArray:
+      description: 'Array of MealPlan data'
+      type: array
+      items:
+        $ref: '#/components/schemas/MealPlan'
+        
+    # -------- USER (Object) --------
+    User:
+      description: 'User data model'
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 0
+          readOnly: true
+          
+        email:
+          type: string
+          example: 'rockerweller@aol.com'
+          
+        username:
+          type: string
+          example: 'rockerweller42'
+          
+        password:
+          # Used in POST/PUT/PATCH, not returned by GET
+          type: string
+          writeOnly: true
+        
+        avatarURL:
+          type: string
+          example: 'myVERYcoolAvatar.com'
+          
+        mealplans:
+          $ref: '#/components/schemas/MealPlans'
+        
+        recipes:
+          $ref: '#/components/schemas/Recipes'
+          
+        usersfollowed:
+          $ref: '#/components/schemas/Users'
+          
+    # -------- USERS (Array of USER Objects) --------
+    Users:
+      description: 'Array of User data'
+      type: array
+      items:
+        $ref: '#/components/schemas/User' 
+    
+    # -------- USERLOGIN (Object) --------
+    
+    UserLogin:
+      description: 'Login Credentials'
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'rockerweller@aol.com'
+          
+        password:
+          # Used in POST/PUT/PATCH, not returned by GET
+          type: string
+          writeOnly: true
+  
+    # -------- GROCERYLIST (Object) --------
+    GroceryList:
+      description: 'Grocery list data model'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+          readOnly: true
+          
+        ingredients:
+          $ref: '#/components/schemas/Ingredients'
+          
+        notes:
+          type: string
+          example: 'Also grab new tub of butter every other Monday'
+          
+    # -------- GROCERYLISTS (Array of GROCERYLIST Objects) --------
+    GroceryLists:
+      description: 'Array of GroceryList data'
+      type: array
+      items:
+        $ref: '#/components/schemas/GroceryList'

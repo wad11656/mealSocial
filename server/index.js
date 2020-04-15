@@ -1,72 +1,101 @@
- const express = require('express')
- var mysql = require('mysql')
- const app = express()
+const express = require("express");
+const path = require("path");
+const Enforcer = require("openapi-enforcer-middleware");
+var cors = require("cors");
 
- var connection = mysql.createConnection({
- 	host: 'db',
- 	user: 'it410mealplan',
- 	password: '410mealRockWad',
- 	database: 'mealplan'
- })
- connection.connect()
+/* User Constants*/
+const DB = require("./data/userData.js");
+const config = require("./data/userConfig.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 
- app.get('/read', (req, res) => {
+const db = new DB("sqlitedb.db");
+const router = express.Router();
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
 
+const dotenv = require('dotenv');
+/* End of USER Constants*/
 
- 	connection.query('SELECT * from Users', function (err, rows, fields) {
- 		if (err) {
- 			res.send(err)
- 		}
- 		else{
- 			if(rows.length > 0){
- 				var i;
- 				var string_return = "";
- 				for(i = 0; i < rows.length; i++){
- 					string_return += rows[i].id + " " + rows[i].name + "<br>\n";
- 				}
- 			res.send(string_return)
- 			}
- 			else{
- 				res.send('Empty table!')
- 			}
- 		}
- 	})
- })
+const app = express();
+app.use(express.json());
+app.use(cors());
+// Create an enforcermiddleware instance
 
- app.get('/update', (req, res) => {
- 	connection.query('UPDATE Users SET name = ? WHERE id = ?', [req.query.name, parseInt(req.query.id)], function (err, rows, fields) {
- 		if (err) {
- 			res.send(err)
- 		}
- 		else{
- 			res.send('Update Successful')
- 		}
- 	})
- })
+const enforcer = Enforcer(path.resolve(__dirname, "mealPlan.yaml"));
 
- app.get('/create', (req, res) => {
- 	connection.query('INSERT INTO Users (name) VALUES (?)', req.query.name, function (err, rows, fields) {
- 		 if (err) {
- 			res.send(err)
- 		}
- 		else{
- 			res.send('Create Successful')
- 		}
- 	})
- })
+enforcer.controllers(path.resolve(__dirname, "controllers"));
 
- app.get('/delete', (req, res) => {
- 	connection.query('DELETE FROM Users WHERE id = ?', req.query.id, function (err, rows, fields) {
- 		if (err) {
- 			res.send(err)
- 		}
- 		else{
- 			res.send('Delete Successful')
- 		}
- 	})
- })
+app.use(enforcer.middleware());
 
- app.listen(3000, err => {
- 	if (err) return console.error(err.stack)
- 		console.log('Server listening on port 3000')
- })
+/* USER Endpoints */
+
+router.post("/register", function (req, res) {
+  db.insert(
+    [req.body.name, req.body.email, bcrypt.hashSync(req.body.password, 8)],
+    function (err) {
+      if (err)
+        return (
+          res
+            .status(500)
+            //.send("There was a problem registering the user.");
+            .send("A user with that EMAIL or NAME already exists.")
+        );
+      db.selectByEmail(req.body.email, (err, user) => {
+        if (err)
+          return res.status(500).send("There was a problem getting user");
+        let token = jwt.sign({ id: user.id }, config.secret, {
+          expiresIn: 86400, // expires in 24 hours
+        });
+        res.status(200).send({ auth: true, token: token, user: user });
+      });
+    }
+  );
+});
+
+router.post("/register-admin", function (req, res) {
+  db.insertAdmin(
+    [req.body.name, req.body.email, bcrypt.hashSync(req.body.password, 8), 1],
+    function (err) {
+      if (err)
+        return (
+          res
+            .status(500)
+            //.send("There was a problem registering the user.");
+            .send("A user with that EMAIL or NAME already exists.")
+        );
+      db.selectByEmail(req.body.email, (err, user) => {
+        if (err)
+          return res.status(500).send("There was a problem getting user");
+        let token = jwt.sign({ id: user.id }, config.secret, {
+          expiresIn: 86400, // expires in 24 hours
+        });
+        res.status(200).send({ auth: true, token: token, user: user });
+      });
+    }
+  );
+});
+
+router.post("/login", (req, res) => {
+  db.selectByEmail(req.body.email, (err, user) => {
+    if (err) return res.status(500).send("Error on the server.");
+    if (!user) return res.status(404).send("User not found.");
+    let passwordIsValid = bcrypt.compareSync(req.body.password, user.user_pass);
+    if (!passwordIsValid)
+      return res.status(401).send({ auth: false, token: null });
+    let token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // expires in 24 hours
+    });
+    res.status(200).send({ auth: true, token: token, user: user });
+  });
+});
+
+app.use(router);
+
+/* Grab the data from .env file */
+dotenv.config();
+
+app.listen(process.env.PORT, function () {
+  console.log("Listening on port ", process.env.PORT, "!");
+});
