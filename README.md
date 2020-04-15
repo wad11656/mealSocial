@@ -16,7 +16,7 @@
 
 3. The `docker-compose` will spin up the `backend` server, followed by the `frontend` server.
 
-4. Wait until the `frontend` portion of the `docker-compose` completes. The final message displayed in PowerShell terminal should be:
+4. Wait until the `frontend` portion of the `docker-compose` completes. The final message displayed in PowerShell/terminal should be:
 
 ```bash
 frontend_1  |   App running at:
