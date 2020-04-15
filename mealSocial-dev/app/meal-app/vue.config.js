@@ -1,6 +1,8 @@
-// // vue.config.js
+// vue.config.js
 // module.exports = {
 //     devServer: {
-//         proxy: 'http://localhost:3000',
+//    host: process.env.HOST || 'localhost',
+//    open: true,
+//    port: process.env.PORT || 8080
 //     }
 //   }
