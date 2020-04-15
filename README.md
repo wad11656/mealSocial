@@ -6,14 +6,17 @@
 
 ## Run in Docker (Option 1)
 
-1. Install **Docker** on your host machine. [ https://docs.docker.com/get-docker/ ]
+1. Install **Docker** on your host machine.
 
-1. In a PowerShell/terminal, Navigate to the same directory where `docker-compose.yml` is stored and run :
+[ https://docs.docker.com/get-docker/ ]
+
+2. In a PowerShell/terminal, Navigate to the same directory where `docker-compose.yml` is stored and run :
+
 `docker-compose up --build`
 
-1. The `docker-compose` will spin up the `backend` server, followed by the `frontend` server.
+3. The `docker-compose` will spin up the `backend` server, followed by the `frontend` server.
 
-1. Wait until the `frontend` portion of the `docker-compose` completes. The final message displayed in PowerShell terminal should be:
+4. Wait until the `frontend` portion of the `docker-compose` completes. The final message displayed in PowerShell terminal should be:
 
 ```bash
 frontend_1  |   App running at:
@@ -26,9 +29,9 @@ frontend_1  |   Note that the development build is not optimized.
 frontend_1  |   To create a production build, run npm run build.
 ```
 
-1. Once the above message is displayed, navigate to `localhost:8080` in a web browser on your host machine.
+5. Once the above message is displayed, navigate to `localhost:8080` in a web browser on your host machine.
 
-1. In a new PowerShell/terminal, navigate to the same directory where `docker-compose.yml` is and run:
+6. In a new PowerShell/terminal, navigate to the same directory where `docker-compose.yml` is and run:
 `docker-compose down`
 
 ## Set up for Local Development (Option 2)
