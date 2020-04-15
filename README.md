@@ -31,7 +31,7 @@ frontend_1  |   To create a production build, run npm run build.
 
 5. Once the above message is displayed, navigate to `localhost:8080` in a web browser on your host machine.
 
-# Shut Down
+### Shut Down
 In a new PowerShell/terminal, navigate to the same directory where `docker-compose.yml` is and run:
 `docker-compose down`
 
