@@ -33,7 +33,7 @@ export default {
   },
 
   deleteUser(id) {
-    return axios.get(BASE_URL + USERS + "/" + id).then(res => {
+    return axios.delete(BASE_URL + USERS + "/" + id).then(res => {
       console.log(res.data);
       return res.data;
     });

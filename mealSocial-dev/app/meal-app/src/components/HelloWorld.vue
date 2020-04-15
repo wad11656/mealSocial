@@ -2,7 +2,9 @@
   <div class="hello">
     <img src="../assets/logo.png" width="500px" />
     <h1>Welcome to MealSocial!</h1>
-    <h2>{{ msg }}</h2>
+    <h2>
+      <i>{{ msg }}</i>
+    </h2>
   </div>
 </template>
 
@@ -22,6 +24,9 @@ h1,
 h2 {
   font-weight: normal;
   font-family: "Manjari", sans-serif;
+}
+h2 {
+  color: goldenrod;
 }
 ul {
   list-style-type: none;

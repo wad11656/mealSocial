@@ -6,18 +6,25 @@
         id="home"
         style="float: left; width: 33%; text-align: left; font-family: Manjari, sans-serif;font-size: 20px;"
       >
-        <router-link to="/">
-          <img src="../assets/home.png" width="50px" />
-          <br />
-          <b>Home</b>
-        </router-link>
+        <table>
+          <tr>
+            <td>
+              <router-link to="/">
+                <img src="../assets/home.png" width="50px" />
+                <br />
+                <b>Home</b>
+              </router-link>
+            </td>
+            <td width="90%"></td>
+          </tr>
+        </table>
       </span>
       <span
         style="float: left; width: 33%; text-align: center; font-family: Manjari, sans-serif; font-size: 20px;"
       >
         <table id="centered">
           <tr>
-            <td>
+            <td style="padding-top: 7px;">
               <router-link to="/recipes">
                 <img src="../assets/recipe.png" width="40px" />
                 <br />
@@ -31,7 +38,7 @@
                 <b>MealPlans</b>
               </router-link>
             </td>
-            <td>
+            <td style="padding-top: 7px;">
               <router-link to="/grocerylist">
                 <img src="../assets/shopping.png" width="40px" />
                 <br />
@@ -66,9 +73,19 @@
         </router-link>
         <table id="rightside" v-else>
           <tr>
-            <td width="80%">
+            <td width="70%">
               <br />
-              <span id="username">{{ userName }}</span>
+              <span id="username">
+                {{ userName }}
+                <img src="../assets/transparent_rectangle.png" width="20px" />
+              </span>
+            </td>
+            <td style="text-align: center; padding-top:10px;">
+              <router-link to="/admin">
+                <img src="../assets/gear.png" width="40px" />
+                <br />
+                <b>Admin</b>
+              </router-link>
             </td>
             <td>
               <span id="logout" @click="handleLogout">
@@ -103,8 +120,7 @@ a:visited {
   color: white;
   text-decoration: none;
 }
-td:hover,
-#home:hover {
+td:hover {
   -webkit-filter: brightness(120%);
 }
 td:hover a,
@@ -116,9 +132,7 @@ td:hover a,
   -webkit-filter: brightness(120%);
   color: #9acee0;
 }
-#home:hover a {
-  color: #9acee0;
-}
+
 #username {
   color: white;
   font-family: "Manjari", sans-serif;

@@ -50,7 +50,7 @@ export default {
                 this.$router.push(this.$route.params.nextUrl);
               } else {
                 if (is_admin == 1) {
-                  this.$router.push("admin");
+                  this.$router.push("recipes");
                 } else {
                   this.$router.push("recipes");
                 }

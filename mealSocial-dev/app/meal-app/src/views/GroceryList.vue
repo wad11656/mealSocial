@@ -79,7 +79,7 @@ export default {
   transform: translate(-50%, -50%);
 
   width: 40%;
-  height: 85%;
+  height: 83%;
   overflow: auto;
 
   box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2);

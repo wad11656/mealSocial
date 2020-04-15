@@ -330,7 +330,10 @@ button {
   color: white;
   font-size: 16px;
   font-family: "Manjari", sans-serif;
-  padding: 4px 12px;
+  padding-top: 7px;
+  padding-bottom: 0px;
+  padding-left: 12px;
+  padding-right: 12px;
   border-radius: 8px;
 }
 
@@ -419,6 +422,9 @@ button {
 .removeButt {
   float: right;
   margin-right: 5%;
+  margin-top: -16px;
+  padding-bottom: -5px;
+  font-size: 18px;
 }
 
 .instructions {
