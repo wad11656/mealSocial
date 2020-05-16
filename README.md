@@ -10,7 +10,7 @@
 
 [ https://docs.docker.com/get-docker/ ]
 
-2. In a PowerShell/terminal, `cd` to the project root directory (where `docker-compose.yml` is stored) and run :
+2. In a PowerShell/terminal, `cd` to the project root directory (where `docker-compose.yml` is) and run :
 
 `docker-compose up --build`
 
