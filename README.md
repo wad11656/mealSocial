@@ -50,3 +50,9 @@ In a new PowerShell/terminal, navigate to the same directory where `docker-compo
 1. Rrun `mv /server/.env.example /server/.env` to rename `.env.example` to `.env`.
 
 1. (Optional) Run `nano .env` and change `PORT=3000` to a different port if you wish
+
+### Run app
+
+1. Start the backend: Run `node server/index.js`.
+
+1. Start the frontend: `cd app` then `npm run dev`.
