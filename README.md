@@ -47,4 +47,4 @@ In a new PowerShell/terminal, navigate to the project root directory (where `doc
 
 1. **Backend:** Run `node server/index.js`.
 
-1. **Frontend:** Run `cd app` then `npm run dev`.
+1. **Frontend:** `cd` to `/app/` and run `npm run dev`.
