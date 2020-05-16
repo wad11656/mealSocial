@@ -39,9 +39,9 @@ In a new PowerShell/terminal, navigate to the project root directory (where `doc
 
 ### Install dependancies
 
-1. In a PowerShell/terminal, `cd` to `/server/` and run `npm install` to install backend dependancies.
+1. In a PowerShell/terminal, `cd` to `/server/` and run `npm install` to install the backend dependancies.
 
-1. In a PowerShell/terminal, `cd` to `/app/` and run `npm install` to install frontend dependancies.
+1. In a PowerShell/terminal, `cd` to `/app/` and run `npm install` to install the frontend dependancies.
 
 ### Ready files
 
