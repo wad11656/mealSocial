@@ -49,7 +49,7 @@ In a new PowerShell/terminal, navigate to the same directory where `docker-compo
 
 1. Rename `.env.example` to `.env` by running `mv /server/.env.example /server/.env`.
 
-1. **(Optional)** Run `nano .env` and change `PORT=3000` to a different port.
+1. **(Optional)** Run `nano /server/.env` and change `PORT=3000` to a different port.
 
 ### Run the app
 
