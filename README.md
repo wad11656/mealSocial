@@ -1,6 +1,6 @@
 ## Prepare Environment Variables (Required)
 
-1. Change the name of `/server/.env.example` to `.env` by running `mv /server/.env.example /server/.env`and edit the `NODE_ENV` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
+1. Change the name of `/server/.env.example` to `.env` by running `mv server/.env.example server/.env`and edit the `NODE_ENV` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
 
 1. Change the name `/app/.env.example` to `.env` and edit the `HOST` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
 
