@@ -10,7 +10,7 @@
 
 [ https://docs.docker.com/get-docker/ ]
 
-2. In a PowerShell/terminal, Navigate to the same directory where `docker-compose.yml` is stored and run :
+2. In a PowerShell/terminal, `cd` to the project root directory (where `docker-compose.yml` is stored) and run :
 
 `docker-compose up --build`
 
@@ -39,9 +39,9 @@ In a new PowerShell/terminal, navigate to the same directory where `docker-compo
 
 ### Install dependancies
 
-1. In a PowerShell/terminal, navigate to `/server/` wi run `npm install` to install backend dependancies.
+1. In a PowerShell/terminal, `cd` to `/server/` wi run `npm install` to install backend dependancies.
 
-1. In a PowerShell/terminal, navigate to `/app/` and run `npm install` to install frontend dependancies.
+1. In a PowerShell/terminal, `cd` to `/app/` and run `npm install` to install frontend dependancies.
 
 ### Ready files
 
