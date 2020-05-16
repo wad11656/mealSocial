@@ -37,13 +37,13 @@ In a new PowerShell/terminal, navigate to the same directory where `docker-compo
 
 ## Set up for Local Development (Option 2)
 
-# Install dependancies
+### Install dependancies
 
 1. In a PowerShell/terminal, navigate to `/server/` and run `npm install` to install backend dependancies.
 
 1. In a PowerShell/terminal, navigate to `/app/` and run `npm install` to install frontend dependancies.
 
-# Ready files
+### Ready files
 
 1. Navigate to project's root directory with `cd ..`.
 
