@@ -1,6 +1,6 @@
 ## Prepare Environment Variables (Required)
 
-1. Change the name of `/server/.env.example` to `.env`and edit the `NODE_ENV` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
+1. Change the name of `/server/.env.example` to `.env` by running `mv /server/.env.example /server/.env`and edit the `NODE_ENV` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
 
 1. Change the name `/app/.env.example` to `.env` and edit the `HOST` and/or `PORT` if you wish. (No changes necessary for simple local testing.)
 
@@ -42,14 +42,6 @@ In a new PowerShell/terminal, navigate to the project root directory (where `doc
 1. In a PowerShell/terminal, `cd` to `/server/` and run `npm install` to install the backend dependancies.
 
 1. In a PowerShell/terminal, `cd` to `/app/` and run `npm install` to install the frontend dependancies.
-
-### Ready files
-
-1. Navigate to project's root directory with `cd ..`.
-
-1. Rename `.env.example` to `.env` by running `mv /server/.env.example /server/.env`.
-
-1. **(Optional)** Run `nano /server/.env` and change `PORT=3000` to a different port.
 
 ### Run the app
 
