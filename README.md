@@ -51,8 +51,8 @@ In a new PowerShell/terminal, navigate to the same directory where `docker-compo
 
 1. **(Optional)** Run `nano .env` and change `PORT=3000` to a different port.
 
-### Run app
+### Run the app
 
-1. Start the backend: Run `node server/index.js`.
+1. **Backend:** Run `node server/index.js`.
 
-1. Start the frontend: Run `cd app` then `npm run dev`.
+1. **Frontend:** Run `cd app` then `npm run dev`.
